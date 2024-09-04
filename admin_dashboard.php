@@ -13,24 +13,27 @@ include 'db.php';
 // Cambiar el estado de la cuenta si se envía una solicitud de activación/desbloqueo
 if (isset($_GET['toggle_active']) && isset($_GET['id'])) {
     $userId = intval($_GET['id']);
+    
+    // Obtén el estado actual del usuario antes de actualizarlo
+    $stmt = $pdo->prepare("SELECT is_active FROM users WHERE id = ?");
+    $stmt->execute([$userId]);
+    $currentState = $stmt->fetchColumn();
+    
+    // Cambia el estado del usuario
     $stmt = $pdo->prepare("UPDATE users SET is_active = NOT is_active WHERE id = ?");
     $stmt->execute([$userId]);
+
+    // Define la acción basada en el estado anterior
+    $action = ($currentState == 1) ? 'block' : 'unblock';
+
+    // Insertar log
+    $logStmt = $pdo->prepare("INSERT INTO user_logs (user_id, action) VALUES (?, ?)");
+    $logStmt->execute([$userId, $action]);
+
     header("Location: admin_dashboard.php");
     exit();
 }
 
-// Código para bloquear o desbloquear usuarios
-if (isset($_POST['block_user'])) {
-    $userIdToBlock = $_POST['user_id'];
-    $stmt = $pdo->prepare("UPDATE users SET status = 'bloqueado' WHERE id = :user_id");
-    $stmt->execute(['user_id' => $userIdToBlock]);
-}
-
-if (isset($_POST['unblock_user'])) {
-    $userIdToUnblock = $_POST['user_id'];
-    $stmt = $pdo->prepare("UPDATE users SET status = 'activo' WHERE id = :user_id");
-    $stmt->execute(['user_id' => $userIdToUnblock]);
-}
 
 // Obtener todos los usuarios
 $stmt = $pdo->query("SELECT id, username, email, is_active, role FROM users");
