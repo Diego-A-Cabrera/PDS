@@ -28,9 +28,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     $_SESSION['username'] = $user['username'];
                     $_SESSION['role'] = $user['role'];
 
-                    // Registrar en el log de inicio de sesión
-                    $logStmt = $pdo->prepare("INSERT INTO login_logs (user_id, login_time) VALUES (:user_id, NOW())");
+                    // Registrar en el log de inicio de sesión en la tabla user_logs
+                    $logStmt = $pdo->prepare("INSERT INTO user_logs (user_id, action, timestamp) VALUES (:user_id, 'login', NOW())");
                     $logStmt->execute(['user_id' => $user['id']]);
+
 
                     // Redirigir al usuario según su rol
                     if ($user['role'] === 'administrador') {

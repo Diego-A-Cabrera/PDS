@@ -109,15 +109,17 @@ $users = $stmt->fetchAll(PDO::FETCH_ASSOC);
 </head>
 
 <body>
-    <div class="header">
-        <div class="user-info">
-            <?php echo htmlspecialchars($_SESSION['username']); ?><br>
-            Rol: <?php echo htmlspecialchars($_SESSION['role']); ?>
-        </div>
-        <div class="logout">
-            <a href="logout.php">Cerrar sesión</a>
-        </div>
+   
+
+<header class="header">
+    <div class="user-info">
+        <?php echo htmlspecialchars($_SESSION['username']); ?><br>
+        Rol: <?php echo htmlspecialchars($_SESSION['role']); ?>
     </div>
+    <div class="logout">
+        <a href="logout.php" class="logout-btn">Cerrar sesión</a>
+    </div>
+</header>
 
     <div class="table-container">
         <table>
@@ -150,37 +152,7 @@ $users = $stmt->fetchAll(PDO::FETCH_ASSOC);
             </tbody>
         </table>
     <?php
-    if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-        $user_id = $_POST['user_id'];
-    
-        // Conexión a la base de datos
-        $conn = new mysqli('localhost', 'root', '', 'nombre_de_tu_base_de_datos');
-    
-        // Verificar conexión
-        if ($conn->connect_error) {
-            die("Conexión fallida: " . $conn->connect_error);
-        }
-    
-        // Eliminar usuario
-        $sql = "DELETE FROM usuarios WHERE id = ?";
-        $stmt = $conn->prepare($sql);
-        $stmt->bind_param('i', $user_id);
-    
-        if ($stmt->execute()) {
-            echo "Usuario eliminado correctamente.";
-        } else {
-            echo "Error al eliminar el usuario: " . $conn->error;
-        }
-    
-        $stmt->close();
-        $conn->close();
-    
-        // Redirigir de vuelta al panel de administración
-        header("Location: admin_dashboard.php");
-        exit();
-    } else {
-        echo "Método no permitido.";
-    }
+  
     ?>
     </table>
     </div>
@@ -190,3 +162,6 @@ $users = $stmt->fetchAll(PDO::FETCH_ASSOC);
     ?>
     
     </html>
+
+
+    

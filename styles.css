@@ -227,3 +227,29 @@ tr:hover {
     text-decoration: none;
     border-radius: 4px;
 }
+
+.header {
+    background-color: #f0f0f0;
+    padding: 15px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.logout {
+    margin-left: auto;
+}
+
+.logout-btn {
+    padding: 10px 15px;
+    background-color: #007bff;
+    color: white;
+    text-decoration: none;
+    border-radius: 5px;
+    font-size: 14px;
+}
+
+.logout-btn:hover {
+    background-color: #0056b3;
+    cursor: pointer;
+}

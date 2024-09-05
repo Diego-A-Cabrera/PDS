@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 04-09-2024 a las 03:33:41
+-- Tiempo de generación: 06-09-2024 a las 01:06:24
 -- Versión del servidor: 10.4.32-MariaDB
 -- Versión de PHP: 8.2.12
 
@@ -123,7 +123,8 @@ INSERT INTO `login_logs` (`id`, `user_id`, `login_time`) VALUES
 (70, 19, '2024-09-01 18:41:10'),
 (71, 19, '2024-09-01 18:42:37'),
 (72, 19, '2024-09-03 22:15:03'),
-(73, 19, '2024-09-03 22:22:39');
+(73, 19, '2024-09-03 22:22:39'),
+(74, 19, '2024-09-05 19:26:52');
 
 -- --------------------------------------------------------
 
@@ -191,7 +192,26 @@ INSERT INTO `user_logs` (`id`, `user_id`, `action`, `timestamp`) VALUES
 (5, 3, 'block', '2024-09-03 22:25:47'),
 (6, 3, 'block', '2024-09-03 22:26:15'),
 (7, 7, 'block', '2024-09-03 22:30:23'),
-(8, 7, 'unblock', '2024-09-03 22:30:31');
+(8, 7, 'unblock', '2024-09-03 22:30:31'),
+(9, 16, 'block', '2024-09-05 19:26:59'),
+(10, 16, 'unblock', '2024-09-05 19:27:06'),
+(11, 19, 'login', '2024-09-05 19:31:25'),
+(12, 19, 'login', '2024-09-05 19:32:54'),
+(13, 19, 'logout', '2024-09-05 19:34:13'),
+(14, 19, 'login', '2024-09-05 19:35:17'),
+(15, 19, 'logout', '2024-09-05 19:35:37'),
+(16, 19, 'login', '2024-09-05 19:36:04'),
+(17, 19, 'logout', '2024-09-05 19:40:34'),
+(18, 19, 'login', '2024-09-05 19:40:44'),
+(19, 19, 'logout', '2024-09-05 19:41:36'),
+(20, 19, 'login', '2024-09-05 19:41:57'),
+(21, 19, 'logout', '2024-09-05 19:45:27'),
+(22, 19, 'login', '2024-09-05 19:45:33'),
+(23, 19, 'login', '2024-09-05 19:46:16'),
+(24, 19, 'logout', '2024-09-05 19:50:10'),
+(25, 19, 'login', '2024-09-05 19:50:23'),
+(26, 19, 'logout', '2024-09-05 19:53:23'),
+(27, 19, 'login', '2024-09-05 19:53:35');
 
 --
 -- Índices para tablas volcadas
@@ -240,7 +260,7 @@ ALTER TABLE `audit_log`
 -- AUTO_INCREMENT de la tabla `login_logs`
 --
 ALTER TABLE `login_logs`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=74;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=75;
 
 --
 -- AUTO_INCREMENT de la tabla `users`
@@ -252,7 +272,7 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT de la tabla `user_logs`
 --
 ALTER TABLE `user_logs`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=28;
 
 --
 -- Restricciones para tablas volcadas
