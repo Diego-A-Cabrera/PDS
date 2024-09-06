@@ -121,6 +121,28 @@ $users = $stmt->fetchAll(PDO::FETCH_ASSOC);
     </div>
 </header>
 
+<style>
+       .header {
+            width: 100%;
+            background-color: #e0e0e0;
+            /* Gris claro */
+            padding: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-sizing: border-box;
+            border-bottom: 1px solid #ccc;
+            position: fixed;
+            z-index: 10;
+            top: 0;
+            left: 0;
+        }
+
+        .table-container{
+            
+        }
+</style>
+
     <div class="table-container">
         <table>
             <thead>

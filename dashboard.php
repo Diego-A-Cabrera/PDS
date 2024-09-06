@@ -39,6 +39,7 @@ if (!$isAdmin && !$isUser) {
             box-sizing: border-box;
             border-bottom: 1px solid #ccc;
             position: fixed;
+            z-index: 10;
             top: 0;
             left: 0;
         }
