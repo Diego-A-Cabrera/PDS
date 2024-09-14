@@ -13,12 +13,12 @@ include 'db.php';
 // Cambiar el estado de la cuenta si se envía una solicitud de activación/desbloqueo
 if (isset($_GET['toggle_active']) && isset($_GET['id'])) {
     $userId = intval($_GET['id']);
-    
+
     // Obtén el estado actual del usuario antes de actualizarlo
     $stmt = $pdo->prepare("SELECT is_active FROM users WHERE id = ?");
     $stmt->execute([$userId]);
     $currentState = $stmt->fetchColumn();
-    
+
     // Cambia el estado del usuario
     $stmt = $pdo->prepare("UPDATE users SET is_active = NOT is_active WHERE id = ?");
     $stmt->execute([$userId]);
@@ -42,6 +42,9 @@ $users = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 <!DOCTYPE html>
 <html lang="es">
+
+<!-- admin_dashboard.php -->
+<a href="log.php">Ver Registros de Usuarios</a>
 
 <head>
     <meta charset="UTF-8">
@@ -109,20 +112,20 @@ $users = $stmt->fetchAll(PDO::FETCH_ASSOC);
 </head>
 
 <body>
-   
 
-<header class="header">
-    <div class="user-info">
-        <?php echo htmlspecialchars($_SESSION['username']); ?><br>
-        Rol: <?php echo htmlspecialchars($_SESSION['role']); ?>
-    </div>
-    <div class="logout">
-        <a href="logout.php" class="logout-btn">Cerrar sesión</a>
-    </div>
-</header>
 
-<style>
-       .header {
+    <header class="header">
+        <div class="user-info">
+            <?php echo htmlspecialchars($_SESSION['username']); ?><br>
+            Rol: <?php echo htmlspecialchars($_SESSION['role']); ?>
+        </div>
+        <div class="logout">
+            <a href="logout.php" class="logout-btn">Cerrar sesión</a>
+        </div>
+    </header>
+
+    <style>
+        .header {
             width: 100%;
             background-color: #e0e0e0;
             /* Gris claro */
@@ -138,10 +141,8 @@ $users = $stmt->fetchAll(PDO::FETCH_ASSOC);
             left: 0;
         }
 
-        .table-container{
-            
-        }
-</style>
+        .table-container {}
+    </style>
 
     <div class="table-container">
         <table>
@@ -173,17 +174,14 @@ $users = $stmt->fetchAll(PDO::FETCH_ASSOC);
                 <?php endforeach; ?>
             </tbody>
         </table>
-    <?php
-  
-    ?>
-    </table>
+        <?php
+
+        ?>
+        </table>
     </div>
-    </body>
-    
-    <?php 
-    ?>
-    
-    </html>
+</body>
 
+<?php
+?>
 
-    
+</html>

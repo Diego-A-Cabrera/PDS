@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 06-09-2024 a las 01:06:24
--- Versión del servidor: 10.4.32-MariaDB
--- Versión de PHP: 8.2.12
+-- Tiempo de generación: 15-09-2024 a las 00:59:07
+-- Versión del servidor: 10.4.28-MariaDB
+-- Versión de PHP: 8.2.4
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -150,7 +150,7 @@ INSERT INTO `users` (`id`, `username`, `email`, `password`, `role`, `created_at`
 (1, 'Boca', 'boca@boca.com', '$2y$10$HU3icrAzjMi2OV5OwZY/i.oBzena7qQTa0P9TOnnUU6S7Ty8C6qrm', 'usuario', '2024-08-29 23:10:47', 0),
 (2, 'Argentina', 'asd@asd.com', '$2y$10$wJubCWTqwjLTpRNbrtSVo.OtjgrosKiJeXiy6UBnGU3VeXbpuTtz6', '', '2024-08-29 23:35:19', 1),
 (3, 'Fabri', 'fabri@fabri.com', '$2y$10$QplAibiyo4efGrYvo1UcNedW2m5WWUEod1GuVH1iciPeB7j1KJINS', '', '2024-08-29 23:36:49', 1),
-(4, 'Diego', '123123@123123.com', '$2y$10$blISCW1cvs0iFj6G1o06UeI8RZDV.K38Nz/Fs/lOlKUtaAorYvd.i', '', '2024-08-29 23:37:38', 1),
+(4, 'Diego', '123123@123123.com', '$2y$10$blISCW1cvs0iFj6G1o06UeI8RZDV.K38Nz/Fs/lOlKUtaAorYvd.i', '', '2024-08-29 23:37:38', 0),
 (5, 'Manu', 'manu@manu.com', '$2y$10$e28PeFjJ4so0R0AGD55rpeMqIWyundSbysXV1/.4xCtH9K5tXkDMS', '', '2024-08-29 23:40:45', 1),
 (6, 'Gonza', 'gonza@gonza.com', '$2y$10$XLz/y2YoGHBSFaXPB9Xyu.II9M333JSKW7c7PKBiu6TQZdQYFuqYa', '', '2024-08-29 23:43:08', 1),
 (7, 'caro', 'caro@caro.com', '$2y$10$qYGZV3T9eFZS9tLQfJSFvesJG/UoOdzZjj2fDXrFh/uEeD.u56dqW', '', '2024-08-29 23:45:35', 1),
@@ -160,12 +160,14 @@ INSERT INTO `users` (`id`, `username`, `email`, `password`, `role`, `created_at`
 (12, 'emmaa1', '1231232@hotmail.com', '$2y$10$wmmQfeEjjq40NA5WbD3w0OmlKepmIMeY.uL1J0ulCDRLevoaPU.Xm', 'usuario', '2024-08-31 12:53:56', 0),
 (13, 'River', 'river@river.com', '$2y$10$c58Uspu0El4Jl4yfKq5zXe1GFUc8WzcB5fKIIUsjcDksP9ncLQrqq', 'administrador', '2024-08-31 13:15:52', 1),
 (14, 'Marce', 'marce@marce.com', '$2y$10$x7smWCx53e7Ro36Fi6xyXuwGqKFytxLHFr6YqYG7JrZ2O.6PFkgNO', 'administrador', '2024-08-31 14:05:42', 1),
-(15, 'Facu', 'facu@facu.com', '$2y$10$YQaM7WPgudinfOnJ9MfKneSYRSz2yket3JPGQwZUPBVCmRLA11avO', 'usuario', '2024-08-31 14:27:27', 0),
+(15, 'Facu', 'facu@facu.com', '$2y$10$YQaM7WPgudinfOnJ9MfKneSYRSz2yket3JPGQwZUPBVCmRLA11avO', 'usuario', '2024-08-31 14:27:27', 1),
 (16, 'Winkler', 'winkler@winkler.com', '$2y$10$jHy5ID4kIDOk.7.4EA3Xw.dVdE5ZYeYGI8g8pe5X72m3Wpib5g9ai', 'administrador', '2024-08-31 19:37:15', 1),
-(17, 'Pepe', 'pepe@pepe.com', '$2y$10$WyGbuoInz6DQCI1HPByEyeEgb2Fj9WzC.A80oWUvCGvFciobMUVkq', 'administrador', '2024-08-31 20:04:32', 1),
+(17, 'Pepe', 'pepe@pepe.com', '$2y$10$WyGbuoInz6DQCI1HPByEyeEgb2Fj9WzC.A80oWUvCGvFciobMUVkq', 'administrador', '2024-08-31 20:04:32', 0),
 (18, 'Hugo', 'hugo@hugo.com', '$2y$10$m4Dtp95.MVuT4146MQWjL.mRj7iUpoEGBCuVCKA/ZoWWMLs.lilVS', 'administrador', '2024-09-01 18:31:48', 1),
 (19, 'Diego1', 'diego1@diego1.com', '$2y$10$wJxRc22w3hJyll3.lL/MhO2vwERW.nJrO56E58bcKOSvQzINCahtG', 'administrador', '2024-09-01 21:07:32', 1),
-(20, 'diego2', 'diego2@diego2.com', '$2y$10$ADGvIARTmsFzDsE6Y8yQhumIMzO.vrvX1.QIqnZg2Z./6WWiof33e', 'usuario', '2024-09-01 21:08:38', 0);
+(20, 'diego2', 'diego2@diego2.com', '$2y$10$ADGvIARTmsFzDsE6Y8yQhumIMzO.vrvX1.QIqnZg2Z./6WWiof33e', 'usuario', '2024-09-01 21:08:38', 0),
+(21, 'Lula', 'lula@gmail.com', '$2y$10$Nul4s6I0skVoMZoRGJGbbeWQZUHrrtYcIt5nxHCjFNXIIRIUXUibK', 'usuario', '2024-09-14 22:49:18', 1),
+(22, 'Lolo', 'Lolo@gmail.com', '$2y$10$A/FBhUm3Qx/6Kwz8GyIaHOHATL2i4jeNvxRCeESK4kwHgyUzLcEee', 'administrador', '2024-09-14 22:51:01', 1);
 
 -- --------------------------------------------------------
 
@@ -211,7 +213,30 @@ INSERT INTO `user_logs` (`id`, `user_id`, `action`, `timestamp`) VALUES
 (24, 19, 'logout', '2024-09-05 19:50:10'),
 (25, 19, 'login', '2024-09-05 19:50:23'),
 (26, 19, 'logout', '2024-09-05 19:53:23'),
-(27, 19, 'login', '2024-09-05 19:53:35');
+(27, 19, 'login', '2024-09-05 19:53:35'),
+(28, 13, 'login', '2024-09-14 18:39:23'),
+(29, 13, 'logout', '2024-09-14 19:00:36'),
+(30, 13, 'login', '2024-09-14 19:00:53'),
+(31, 13, 'logout', '2024-09-14 19:05:58'),
+(32, 13, 'login', '2024-09-14 19:06:05'),
+(33, 13, 'login', '2024-09-14 19:13:14'),
+(34, 4, 'block', '2024-09-14 19:19:10'),
+(35, 17, 'block', '2024-09-14 19:19:43'),
+(36, 19, 'login', '2024-09-14 19:21:08'),
+(37, 19, 'logout', '2024-09-14 19:25:39'),
+(38, 3, 'login', '2024-09-14 19:25:47'),
+(39, 5, 'login', '2024-09-14 19:26:31'),
+(40, 15, 'unblock', '2024-09-14 19:26:50'),
+(41, 15, 'login', '2024-09-14 19:27:02'),
+(42, 19, 'login', '2024-09-14 19:28:41'),
+(43, 19, 'logout', '2024-09-14 19:30:41'),
+(44, 17, 'unblock', '2024-09-14 19:31:03'),
+(45, 17, 'login', '2024-09-14 19:31:12'),
+(46, 17, 'block', '2024-09-14 19:31:25'),
+(47, 17, 'logout', '2024-09-14 19:31:27'),
+(48, 13, 'login', '2024-09-14 19:38:07'),
+(49, 22, 'login', '2024-09-14 19:51:47'),
+(50, 22, 'logout', '2024-09-14 19:57:45');
 
 --
 -- Índices para tablas volcadas
@@ -266,13 +291,13 @@ ALTER TABLE `login_logs`
 -- AUTO_INCREMENT de la tabla `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
 
 --
 -- AUTO_INCREMENT de la tabla `user_logs`
 --
 ALTER TABLE `user_logs`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=28;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=51;
 
 --
 -- Restricciones para tablas volcadas
