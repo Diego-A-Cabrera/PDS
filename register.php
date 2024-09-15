@@ -50,7 +50,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 $stmt->execute();
 
                 
-                $stmt->execute();
+                
                 // Redirigir o mostrar mensaje de éxito
                 header("Location: login.php?success=1");
                 exit();
