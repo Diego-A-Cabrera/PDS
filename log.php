@@ -2,62 +2,62 @@
 session_start();
 require 'db.php'; // Incluir conexión a la base de datos con PDO
 
-// Consulta para obtener todas las acciones de los usuarios (incluyendo creación) ordenadas cronológicamente
-$query = "SELECT u.username, u.created_at, ul.action, 
-                 CASE 
-                    WHEN ul.timestamp IS NOT NULL THEN ul.timestamp 
-                    ELSE u.created_at 
-                 END AS action_time
-          FROM users u
-          LEFT JOIN user_logs ul ON u.id = ul.user_id
-          ORDER BY action_time DESC";
+try {
+    $conn = new PDO($dsn, $username, $password);
+    $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-$stmt = $pdo->prepare($query);
-$stmt->execute();
-$results = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    // Consulta para obtener los registros del log de usuarios
+    $sql = "SELECT users.username, user_logs.action, user_logs.timestamp 
+            FROM user_logs 
+            JOIN users ON user_logs.user_id = users.id
+            ORDER BY user_logs.timestamp DESC";
+    $stmt = $conn->prepare($sql);
+    $stmt->execute();
+    
+    // Obtener los resultados
+    $logs = $stmt->fetchAll(PDO::FETCH_ASSOC);
+} catch (PDOException $e) {
+    echo "Error de conexión: " . $e->getMessage();
+    die(); // Detiene la ejecución en caso de error
+}
 ?>
 
 <!DOCTYPE html>
-<html lang="en">
-
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="admin_styles.css">
-    <title>Registros de Usuarios</title>
+    <title>Registro de Usuarios</title>
+    <style>
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        table, th, td {
+            border: 1px solid black;
+        }
+        th, td {
+            padding: 10px;
+            text-align: left;
+        }
+    </style>
 </head>
-
 <body>
-    <h1>Registros de Actividades de Usuarios</h1>
-    <table border="1">
+    <h2>Registro de Actividad de Usuarios</h2>
+    <table>
         <tr>
-            <th>Usuario</th>
+            <th>Username</th>
             <th>Acción</th>
-            <th>Fecha de Acción</th>
+            <th>Fecha y Hora</th>
         </tr>
         <?php
-        if ($results) {
-            foreach ($results as $row) {
-                echo "<tr>
-                        <td>{$row['username']}</td>";
-
-                // Si no hay acción registrada, mostrar "Registro" con la fecha de creación del usuario
-                if (empty($row['action'])) {
-                    echo "<td>Registro</td>
-                          <td>{$row['created_at']}</td>";
-                } else {
-                    // Mostrar otras acciones (login, logout, bloqueo, etc.) con su respectiva fecha
-                    echo "<td>{$row['action']}</td>
-                          <td>{$row['action_time']}</td>";
-                }
-
-                echo "</tr>";
+        if (!empty($logs)) {
+            // Mostrar los datos de cada fila
+            foreach ($logs as $row) {
+                echo "<tr><td>" . htmlspecialchars($row["username"]) . "</td><td>" . htmlspecialchars($row["action"]) . "</td><td>" . htmlspecialchars($row["timestamp"]) . "</td></tr>";
             }
         } else {
-            echo "<tr><td colspan='3'>No hay registros disponibles</td></tr>";
+            echo "<tr><td colspan='3'>No hay registros</td></tr>";
         }
         ?>
     </table>
 </body>
-
 </html>
