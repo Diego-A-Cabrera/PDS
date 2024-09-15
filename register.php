@@ -39,9 +39,17 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     'role' => $role
                 
                 ]);
-                $sql = "INSERT INTO user_logs (user_id, action) VALUES (?, 'create')";
-                $stmt = $conn->prepare($sql);
-                $stmt->bind_param("i", $user_id);
+
+                 // Obtener el último ID de usuario insertado
+                $userId = $pdo->lastInsertId();
+
+
+                // Insertar en user_logs el log del usuario creado
+                $stmt = $pdo->prepare("INSERT INTO user_logs (user_id, action) VALUES (:user_id, 'create')");
+                $stmt->bindValue(':user_id', $userId, PDO::PARAM_INT);
+                $stmt->execute();
+
+                
                 $stmt->execute();
                 // Redirigir o mostrar mensaje de éxito
                 header("Location: login.php?success=1");
