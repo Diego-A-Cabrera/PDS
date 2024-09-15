@@ -25,7 +25,8 @@ if (!$isAdmin && !$isUser) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard</title>
-    <link rel="stylesheet" href="styles.css">
+     <!-- Estilos tomados de admin_dashboard -->
+     <link href="https://fonts.googleapis.com/css?family=Roboto:400,700&display=swap" rel="stylesheet">
     <style>
         /* Estilo para la franja gris que ocupa todo el ancho */
         .header {
@@ -42,6 +43,40 @@ if (!$isAdmin && !$isUser) {
             z-index: 10;
             top: 0;
             left: 0;
+        }
+
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: #f4f6f9;
+            color: #333;
+            margin: 0;
+            padding: 20px;
+        }
+        h1 {
+            text-align: center;
+            color: #4a76a8;
+            margin-top: 60px;
+        }
+        .buttons {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+        }
+        .buttons a {
+            display: inline-block;
+            margin: 0 10px;
+            padding: 10px 20px;
+            background-color: #4a76a8;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+        }
+        .buttons a:hover {
+            background-color: #3c5a7b;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
         }
 
         .content {
@@ -91,10 +126,12 @@ if (!$isAdmin && !$isUser) {
             Usuario:<?php echo htmlspecialchars($_SESSION['username']); ?><br>
             Rol: <?php echo htmlspecialchars($_SESSION['role']); ?>
         </div>
-        <div class="logout">
+        <div class="buttons">
             <a href="logout.php">Cerrar sesión</a>
         </div>
     </div>
+
+    
 
     <div class="content">
         <div class="table-container">
