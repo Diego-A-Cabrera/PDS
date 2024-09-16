@@ -1,25 +1,55 @@
 <?php
-session_start();
-require 'db.php'; // Incluir conexión a la base de datos con PDO
+include 'db.php'; // Incluye la conexión a la base de datos
+session_start(); // Inicia la sesión
 
-try {
-    $conn = new PDO($dsn, $username, $password);
-    $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-
-    // Consulta para obtener los registros del log de usuarios
-    $sql = "SELECT users.username, user_logs.action, user_logs.timestamp 
-            FROM user_logs 
-            JOIN users ON user_logs.user_id = users.id
-            ORDER BY user_logs.timestamp DESC";
-    $stmt = $conn->prepare($sql);
-    $stmt->execute();
-    
-    // Obtener los resultados
-    $logs = $stmt->fetchAll(PDO::FETCH_ASSOC);
-} catch (PDOException $e) {
-    echo "Error de conexión: " . $e->getMessage();
-    die(); // Detiene la ejecución en caso de error
+// Verificar si el usuario está logueado, si no redirigir
+if (!isset($_SESSION['user_id'])) {
+    header("Location: login.php");
+    exit();
 }
+
+// Variables para almacenar los filtros
+$username_filter = isset($_GET['username']) ? $_GET['username'] : '';
+$action_filter = isset($_GET['action']) ? $_GET['action'] : '';
+$date_from = isset($_GET['date_from']) ? $_GET['date_from'] : '';
+$date_to = isset($_GET['date_to']) ? $_GET['date_to'] : '';
+
+// Construir la consulta SQL dinámica con filtros
+$query = "SELECT user_logs.*, users.username FROM user_logs 
+          JOIN users ON user_logs.user_id = users.id WHERE 1=1";
+
+// Agregar filtros si existen
+if ($username_filter) {
+    $query .= " AND users.username LIKE :username";
+}
+if ($action_filter) {
+    $query .= " AND action = :action";
+}
+if ($date_from && $date_to) {
+    $query .= " AND timestamp BETWEEN :date_from AND :date_to";
+}
+
+// Ordenar de más reciente a más antiguo
+$query .= " ORDER BY timestamp DESC";
+
+// Preparar y ejecutar la consulta
+$stmt = $pdo->prepare($query);
+
+// Asignar parámetros a la consulta
+if ($username_filter) {
+    $stmt->bindParam(':username', $username_filter, PDO::PARAM_STR);
+}
+if ($action_filter) {
+    $stmt->bindParam(':action', $action_filter, PDO::PARAM_STR);
+}
+if ($date_from && $date_to) {
+    $stmt->bindParam(':date_from', $date_from);
+    $stmt->bindParam(':date_to', $date_to);
+}
+
+// Ejecutar la consulta
+$stmt->execute();
+$logs = $stmt->fetchAll(PDO::FETCH_ASSOC);
 ?>
 
 <!DOCTYPE html>
@@ -28,122 +58,158 @@ try {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Registro de Usuarios</title>
-    <link href="https://fonts.googleapis.com/css?family=Roboto:400,700&display=swap" rel="stylesheet">
-    
+    <title>Logs de Usuarios</title>
     <style>
         body {
             font-family: 'Roboto', sans-serif;
-            background-color: #2c2f33; /* Fondo oscuro */
-            color: #ffffff; /* Texto blanco */
+            background-color: #1c1e22;
+            color: white;
             margin: 0;
             padding: 20px;
-        }
-
-        .header {
-            background-color: #23272a; /* Franja oscura */
-            padding: 15px;
-            display: flex;
-            justify-content: flex-end; /* Alineación a la derecha */
-            align-items: center;
-            position: fixed;
-            top: 0;
-            width: 100%;
-            z-index: 10;
-            border-bottom: 1px solid #444;
-            box-sizing: border-box;
-        }
-
-        h2 {
-            color: #7289da; /* Azul moderno */
-            margin-top: 80px; /* Margen para evitar el header fijo */
-            text-align: center;
-        }
-
-        .buttons {
-            display: flex;
-            gap: 10px;
-        }
-
-        .buttons a {
-            display: inline-block;
-            padding: 10px 20px;
-            background-color: #7289da; /* Botón azul moderno */
-            color: #ffffff;
-            text-decoration: none;
-            border-radius: 5px;
-            font-weight: bold;
-            transition: background-color 0.3s;
-        }
-
-        .buttons a:hover {
-            background-color: #5865f2; /* Azul más claro al pasar el ratón */
-        }
-
-        .table-container {
-            margin-top: 80px; /* Margen para evitar el header fijo */
         }
 
         table {
             width: 100%;
             border-collapse: collapse;
-            background-color: #2f3136; /* Fondo oscuro para la tabla */
-            color: #ffffff; /* Texto blanco */
+            margin-bottom: 20px;
         }
 
-        th, td {
+        th,
+        td {
             padding: 10px;
             text-align: left;
-            border-bottom: 1px solid #444; /* Borde gris oscuro */
+            border: 1px solid #333;
         }
 
         th {
-            background-color: #23272a; /* Fondo oscuro para encabezados */
-            color: #7289da; /* Texto azul para encabezados */
+            background-color: #4a76a8;
+            color: white;
         }
 
-        tr:hover {
-            background-color: #3a3f44; /* Fondo más claro al pasar el ratón */
+        td {
+            background-color: #2c2f33;
+        }
+
+        .filter-container {
+            background-color: #2c2f33;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+
+        label {
+            color: white;
+        }
+
+        input[type="text"],
+        input[type="date"],
+        select {
+            padding: 8px;
+            margin-right: 10px;
+            border-radius: 5px;
+            background-color: #23272a;
+            color: white;
+            border: none;
+        }
+
+        input[type="submit"] {
+            padding: 10px;
+            background-color: #4a76a8;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        input[type="submit"]:hover {
+            background-color: #3c5a7b;
+        }
+
+        /* Estilo para los botones en el margen superior derecho */
+        .btn-container {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+        }
+
+        .btn {
+            padding: 10px;
+            background-color: #4a76a8;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            text-decoration: none;
+            margin-left: 10px;
+        }
+
+        .btn:hover {
+            background-color: #3c5a7b;
         }
     </style>
 </head>
 
 <body>
 
-    <header class="header">
-        <div class="buttons">
-            <!-- Botón de volver al panel de administración -->
-            <a href="admin_dashboard.php">Volver al Panel de Administración</a>
-            <!-- Botón de cerrar sesión -->
-            <a href="logout.php">Cerrar Sesión</a>
-        </div>
-    </header>
-
-    <h2>Registro de Actividad de Usuarios</h2>
-
-    <div class="table-container">
-        <table>
-            <thead>
-                <tr>
-                    <th>Username</th>
-                    <th>Acción</th>
-                    <th>Fecha y Hora</th>
-                </tr>
-            </thead>
-            <tbody>
-                <?php
-                if (!empty($logs)) {
-                    // Mostrar los datos de cada fila
-                    foreach ($logs as $row) {
-                        echo "<tr><td>" . htmlspecialchars($row["username"]) . "</td><td>" . htmlspecialchars($row["action"]) . "</td><td>" . htmlspecialchars($row["timestamp"]) . "</td></tr>";
-                    }
-                } else {
-                    echo "<tr><td colspan='3'>No hay registros</td></tr>";
-                }
-                ?>
-            </tbody>
-        </table>
+    <!-- Botones de navegación en el margen superior derecho -->
+    <div class="btn-container">
+        <a href="admin_dashboard.php" class="btn">Volver al Panel de Administración</a>
+        <a href="logout.php" class="btn">Cerrar Sesión</a>
     </div>
+
+    <h2>Logs de Usuarios</h2>
+
+    <div class="filter-container">
+        <form method="GET" action="log.php">
+            <!-- Filtro por nombre de usuario -->
+            <label for="username">Filtrar por Nombre de Usuario:</label>
+            <input type="text" name="username" id="username" value="<?php echo htmlspecialchars($username_filter); ?>">
+
+            <!-- Filtro por acción -->
+            <label for="action">Filtrar por Acción:</label>
+            <select name="action" id="action">
+                <option value="">Seleccionar acción</option>
+                <option value="login" <?php if ($action_filter === 'login')
+                    echo 'selected'; ?>>Login</option>
+                <option value="failed login" <?php if ($action_filter === 'failed login')
+                    echo 'selected'; ?>>Failed Login
+                </option>
+                <option value="logout" <?php if ($action_filter === 'logout')
+                    echo 'selected'; ?>>Logout</option>
+            </select>
+
+            <!-- Filtro por rango de fechas -->
+            <label for="date_from">Desde:</label>
+            <input type="date" name="date_from" id="date_from" value="<?php echo htmlspecialchars($date_from); ?>">
+
+            <label for="date_to">Hasta:</label>
+            <input type="date" name="date_to" id="date_to" value="<?php echo htmlspecialchars($date_to); ?>">
+
+            <!-- Botón para aplicar filtros -->
+            <input type="submit" value="Aplicar Filtros">
+        </form>
+    </div>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Nombre de Usuario</th>
+                <th>Acción</th>
+                <th>Fecha y Hora</th>
+            </tr>
+        </thead>
+        <tbody>
+            <?php foreach ($logs as $log): ?>
+                <tr>
+                    <td><?php echo htmlspecialchars($log['username']); ?></td>
+                    <td><?php echo htmlspecialchars($log['action']); ?></td>
+                    <td><?php echo htmlspecialchars($log['timestamp']); ?></td>
+                </tr>
+            <?php endforeach; ?>
+        </tbody>
+    </table>
 
 </body>
 

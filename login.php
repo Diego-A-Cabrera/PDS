@@ -13,35 +13,68 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if (!empty($username) && !empty($password)) {
         try {
             // Preparar consulta para obtener datos del usuario
-            $stmt = $pdo->prepare("SELECT id, username, password, role, is_active FROM users WHERE username = :username");
+            $stmt = $pdo->prepare("SELECT id, username, password, role, is_active, failed_attempts, last_attempt FROM users WHERE username = :username");
             $stmt->execute(['username' => $username]);
             $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
-            // Verificar si el usuario existe y la contraseña es correcta
-            if ($user && password_verify($password, $user['password'])) {
+            // Si el usuario existe
+            if ($user) {
                 // Verificar si la cuenta está activa
                 if ($user['is_active'] == 0) {
                     $error = "Tu cuenta ha sido bloqueada. Por favor, contacta al administrador.";
                 } else {
-                    // Iniciar sesión y redirigir al usuario según su rol
-                    $_SESSION['user_id'] = $user['id'];
-                    $_SESSION['username'] = $user['username'];
-                    $_SESSION['role'] = $user['role'];
+                    // Verificar si la contraseña es correcta
+                    if (password_verify($password, $user['password'])) {
+                        // Reiniciar contador de intentos fallidos
+                        $stmt = $pdo->prepare("UPDATE users SET failed_attempts = 0, last_attempt = NULL WHERE id = :id");
+                        $stmt->execute(['id' => $user['id']]);
 
-                    // Registrar en el log de inicio de sesión en la tabla user_logs
-                    $logStmt = $pdo->prepare("INSERT INTO user_logs (user_id, action, timestamp) VALUES (:user_id, 'login', NOW())");
-                    $logStmt->execute(['user_id' => $user['id']]);
+                        // Iniciar sesión y redirigir al usuario según su rol
+                        $_SESSION['user_id'] = $user['id'];
+                        $_SESSION['username'] = $user['username'];
+                        $_SESSION['role'] = $user['role'];
 
-                    // Redirigir al usuario según su rol
-                    if ($user['role'] === 'administrador') {
-                        header("Location: admin_dashboard.php");
+                        // Registrar en el log de inicio de sesión en la tabla user_logs
+                        $logStmt = $pdo->prepare("INSERT INTO user_logs (user_id, action, timestamp) VALUES (:user_id, 'login', NOW())");
+                        $logStmt->execute(['user_id' => $user['id']]);
+
+                        // Redirigir al usuario según su rol
+                        if ($user['role'] === 'administrador') {
+                            header("Location: admin_dashboard.php");
+                        } else {
+                            header("Location: dashboard.php");
+                        }
+                        exit();
                     } else {
-                        header("Location: dashboard.php");
+                        // Incrementar el contador de intentos fallidos
+                        $failedAttempts = $user['failed_attempts'] + 1;
+                        $lastAttempt = date('Y-m-d H:i:s');
+
+                        if ($failedAttempts >= 3) {
+                            // Bloquear la cuenta
+                            $stmt = $pdo->prepare("UPDATE users SET is_active = 0, failed_attempts = :failed_attempts, last_attempt = :last_attempt WHERE id = :id");
+                            $stmt->execute(['id' => $user['id'], 'failed_attempts' => $failedAttempts, 'last_attempt' => $lastAttempt]);
+
+                            // Registrar el evento en el log
+                            $logStmt = $pdo->prepare("INSERT INTO user_logs (user_id, action, timestamp) VALUES (:user_id, 'too many failed attempts', NOW())");
+                            $logStmt->execute(['user_id' => $user['id']]);
+
+                            $error = "Tu cuenta ha sido bloqueada debido a demasiados intentos fallidos.";
+                        } else {
+                            // Actualizar el contador de intentos fallidos
+                            $stmt = $pdo->prepare("UPDATE users SET failed_attempts = :failed_attempts, last_attempt = :last_attempt WHERE id = :id");
+                            $stmt->execute(['id' => $user['id'], 'failed_attempts' => $failedAttempts, 'last_attempt' => $lastAttempt]);
+
+                            // Registrar el intento fallido en el log
+                            $logStmt = $pdo->prepare("INSERT INTO user_logs (user_id, action, timestamp) VALUES (:user_id, 'failed login attempt', NOW())");
+                            $logStmt->execute(['user_id' => $user['id']]);
+
+                            $error = "Usuario y/o contraseña incorrectos.";
+                        }
                     }
-                    exit();
                 }
             } else {
-                $error = "Nombre de usuario o contraseña incorrectos.";
+                $error = "Usuario y/o contraseña incorrectos.";
             }
         } catch (PDOException $e) {
             $error = "Error al iniciar sesión: " . $e->getMessage();
@@ -63,7 +96,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <style>
         body {
             font-family: 'Roboto', sans-serif;
-            background-color: #1c1e22; /* Fondo oscuro */
+            background-color: #1c1e22;
             color: white;
             margin: 0;
             padding: 0;
@@ -94,7 +127,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             color: white;
         }
 
-        input[type="text"], input[type="password"] {
+        input[type="text"],
+        input[type="password"] {
             width: 100%;
             padding: 10px;
             margin-bottom: 20px;
@@ -155,7 +189,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         <?php if ($error): ?>
             <div class="error-message"><?php echo htmlspecialchars($error); ?></div>
         <?php endif; ?>
-        
+
         <form method="POST" action="login.php">
             <label for="username">Nombre de usuario</label>
             <input type="text" name="username" id="username" required>
