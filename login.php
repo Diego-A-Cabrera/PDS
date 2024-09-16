@@ -32,7 +32,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     $logStmt = $pdo->prepare("INSERT INTO user_logs (user_id, action, timestamp) VALUES (:user_id, 'login', NOW())");
                     $logStmt->execute(['user_id' => $user['id']]);
 
-
                     // Redirigir al usuario según su rol
                     if ($user['role'] === 'administrador') {
                         header("Location: admin_dashboard.php");
@@ -60,16 +59,90 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Iniciar Sesión</title>
-    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css?family=Roboto:400,700&display=swap" rel="stylesheet">
     <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: #1c1e22; /* Fondo oscuro */
+            color: white;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .login-container {
+            background-color: #2c2f33;
+            padding: 40px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+            max-width: 400px;
+            width: 100%;
+        }
+
+        h2 {
+            text-align: center;
+            color: #4a76a8;
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: white;
+        }
+
+        input[type="text"], input[type="password"] {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 20px;
+            border: none;
+            border-radius: 5px;
+            background-color: #23272a;
+            color: white;
+        }
+
+        input[type="submit"] {
+            width: 100%;
+            padding: 10px;
+            background-color: #4a76a8;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        input[type="submit"]:hover {
+            background-color: #3c5a7b;
+        }
+
         .error-message {
             color: #D8000C;
             background-color: #FFBABA;
             border: 1px solid #D8000C;
             border-radius: 5px;
             padding: 10px;
-            margin-bottom: 10px;
+            margin-bottom: 20px;
             font-size: 14px;
+            text-align: center;
+        }
+
+        .footer {
+            margin-top: 20px;
+            text-align: center;
+            color: #888;
+        }
+
+        .footer a {
+            color: #4a76a8;
+            text-decoration: none;
+        }
+
+        .footer a:hover {
+            text-decoration: underline;
         }
     </style>
 </head>
@@ -77,22 +150,26 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 <body>
     <div class="login-container">
         <h2>Iniciar Sesión</h2>
+
+        <!-- Mostrar un mensaje de error si es necesario -->
         <?php if ($error): ?>
             <div class="error-message"><?php echo htmlspecialchars($error); ?></div>
         <?php endif; ?>
+        
         <form method="POST" action="login.php">
-            <div class="input-group">
-                <label for="username">Nombre de usuario</label>
-                <input type="text" name="username" id="username" required>
-            </div>
-            <div class="input-group">
-                <label for="password">Contraseña</label>
-                <input type="password" name="password" id="password" required>
-            </div>
-            <button type="submit" class="btn-login">Iniciar sesión</button>
-            <p>¿No tienes una cuenta? <a href="register.php">Regístrate aquí</a></p>
-            <p><a href="password_reset.php">¿Olvidaste tu contraseña?</a></p> <!-- Enlace para recuperar contraseña -->
+            <label for="username">Nombre de usuario</label>
+            <input type="text" name="username" id="username" required>
+
+            <label for="password">Contraseña</label>
+            <input type="password" name="password" id="password" required>
+
+            <input type="submit" value="Iniciar Sesión">
         </form>
+
+        <div class="footer">
+            <p>¿No tienes cuenta? <a href="register.php">Regístrate aquí</a></p>
+            <p><a href="password_reset.php">¿Olvidaste tu contraseña?</a></p>
+        </div>
     </div>
 </body>
 
