@@ -173,11 +173,19 @@ $logs = $stmt->fetchAll(PDO::FETCH_ASSOC);
                 <option value="">Seleccionar acción</option>
                 <option value="login" <?php if ($action_filter === 'login')
                     echo 'selected'; ?>>Login</option>
-                <option value="failed login" <?php if ($action_filter === 'failed login')
+                <option value="failed login attempt" <?php if ($action_filter === 'failed login attempt')
                     echo 'selected'; ?>>Failed Login
                 </option>
                 <option value="logout" <?php if ($action_filter === 'logout')
                     echo 'selected'; ?>>Logout</option>
+                <option value="create" <?php if ($action_filter === 'create')
+                    echo 'selected'; ?>>Create</option>
+                <option value="block" <?php if ($action_filter === 'block')
+                    echo 'selected'; ?>>Block</option>
+                <option value="unblock" <?php if ($action_filter === 'unblock')
+                    echo 'selected'; ?>>Unblock</option>
+                <option value="too many failed attempts" <?php if ($action_filter === 'too many failed attempts')
+                    echo 'selected'; ?>>Too many failed attempts</option>
             </select>
 
             <!-- Filtro por rango de fechas -->
