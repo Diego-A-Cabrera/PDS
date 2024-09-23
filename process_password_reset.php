@@ -21,11 +21,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
             if ($user) {
-                // Comparar respuestas en formato no sensible a mayúsculas/minúsculas
-                if (strcasecmp($answer1, $user['security_question_1']) == 0 &&
-                    strcasecmp($answer2, $user['security_question_2']) == 0 &&
-                    strcasecmp($answer3, $user['security_question_3']) == 0) {
-
+                // Comparar respuestas con los hashes almacenados en la base de datos usando password_verify
+                if (
+                    password_verify($answer1, $user['security_question_1']) &&
+                    password_verify($answer2, $user['security_question_2']) &&
+                    password_verify($answer3, $user['security_question_3'])
+                ) {
                     // Respuestas correctas, redirigir a la página para cambiar contraseña
                     $_SESSION['reset_email'] = $email;
                     header("Location: update_password.php");
@@ -45,8 +46,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 }
 ?>
 
+
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -64,6 +67,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             align-items: center;
             height: 100vh;
         }
+
         .container {
             background-color: #2c2f33;
             padding: 40px;
@@ -72,16 +76,19 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             max-width: 400px;
             width: 100%;
         }
+
         h2 {
             text-align: center;
             color: #4a76a8;
             margin-bottom: 20px;
         }
+
         label {
             display: block;
             margin-bottom: 8px;
             color: white;
         }
+
         input[type="email"],
         input[type="text"],
         input[type="password"] {
@@ -93,6 +100,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             background-color: #23272a;
             color: white;
         }
+
         input[type="submit"] {
             width: 100%;
             padding: 10px;
@@ -103,9 +111,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             cursor: pointer;
             font-size: 16px;
         }
+
         input[type="submit"]:hover {
             background-color: #3c5a7b;
         }
+
         .error-message {
             color: #D8000C;
             background-color: #FFBABA;
@@ -118,6 +128,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         }
     </style>
 </head>
+
 <body>
     <div class="container">
         <h2>Restablecer Contraseña</h2>
@@ -130,17 +141,18 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             <label for="email">Correo Electrónico</label>
             <input type="email" name="email" id="email" required>
 
-            <label for="answer1">Respuesta a la pregunta 1</label>
+            <label for="answer1">¿Cuál fue el nombre de la escuela a la que fuiste?</label>
             <input type="text" name="answer1" id="answer1" required>
 
-            <label for="answer2">Respuesta a la pregunta 2</label>
+            <label for="answer2">¿Cuál fue el nombre de tu primera mascota?</label>
             <input type="text" name="answer2" id="answer2" required>
 
-            <label for="answer3">Respuesta a la pregunta 3</label>
+            <label for="answer3">¿Cuál es tu película favorita?</label>
             <input type="text" name="answer3" id="answer3" required>
 
             <input type="submit" value="Enviar">
         </form>
     </div>
 </body>
+
 </html>

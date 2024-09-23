@@ -35,6 +35,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 try {
                     // Hash de la contraseña
                     $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
+                    $security_question_1 = password_hash($security_question_1, PASSWORD_DEFAULT);
+                    $security_question_2 = password_hash($security_question_2, PASSWORD_DEFAULT);
+                    $security_question_3 = password_hash($security_question_3, PASSWORD_DEFAULT);
 
                     // Insertar nuevo usuario en la base de datos con marcadores de posición correctos
                     $stmt = $pdo->prepare("INSERT INTO users 
@@ -52,6 +55,19 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                         ':security_question_2' => $security_question_2,
                         ':security_question_3' => $security_question_3
                     ]);
+
+                    // Obtener el ID del nuevo usuario
+                    $user_id = $pdo->lastInsertId();
+
+                    // Registrar la acción en user_logs solo si $user_id está definido
+                    if ($user_id) {
+                        $log_stmt = $pdo->prepare("INSERT INTO user_logs (user_id, action, timestamp) VALUES (:user_id, :action, NOW())");
+                        $log_stmt->execute([
+                            ':user_id' => $user_id,
+                            ':action' => 'create'
+                        ]);
+
+                    }
 
                     // Mensaje de éxito
                     $success = "Registro exitoso. Ahora puedes iniciar sesión.";

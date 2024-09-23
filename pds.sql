@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 23-09-2024 a las 17:30:32
--- Versión del servidor: 10.4.32-MariaDB
--- Versión de PHP: 8.2.12
+-- Tiempo de generación: 23-09-2024 a las 22:32:57
+-- Versión del servidor: 10.4.28-MariaDB
+-- Versión de PHP: 8.2.4
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -53,7 +53,12 @@ INSERT INTO `users` (`id`, `username`, `email`, `password`, `role`, `created_at`
 (4, 'Ema', 'ema@ema.com', '$2y$10$dzCbex43D0fucIUSyHXzSe7P7QFinav5jYZ4SbXwKt2z6lz3nshAG', 'usuario', '2024-09-16 22:49:16', 1, 0, NULL, NULL, NULL, NULL),
 (5, 'Fabri', 'Fabri@123.com', '$2y$10$OswG5NCwF//dsXJAzbKAluqbCVvRO4mjfuE8OSrBZ1leeAZdaEhfy', 'usuario', '2024-09-16 23:01:56', 1, 0, NULL, NULL, NULL, NULL),
 (6, 'Marce', 'marce@123.com', '$2y$10$WDURy9mjgbrvAKdEeU70F.tMGKMSXcwyPPZsdxRZLxFlsEdSuoxYO', 'usuario', '2024-09-16 23:05:24', 1, 0, NULL, NULL, NULL, NULL),
-(7, 'Joaco', 'joaco@joaco.com', '$2y$10$9sxdofSdkAm9uYUA3d83q.Z77NX.aheLUj6ahs.qjIFFcYJHKSof.', 'usuario', '2024-09-23 14:57:04', 1, 0, NULL, '12345', 'qwerty', 'asdfg');
+(7, 'Joaco', 'joaco@joaco.com', '$2y$10$9sxdofSdkAm9uYUA3d83q.Z77NX.aheLUj6ahs.qjIFFcYJHKSof.', 'usuario', '2024-09-23 14:57:04', 1, 0, NULL, '12345', 'qwerty', 'asdfg'),
+(8, 'Gustavo', 'gustavo@gustavo.com', '$2y$10$9CdCRgke0if1LCf9iwRTjObis8uN0P5rde2oZq1SQXgUYcc.vwCve', 'usuario', '2024-09-23 19:04:53', 1, 0, NULL, 'Malvinas', 'Argentinas', '12345'),
+(9, 'Lautaro', 'lautaro@123.com', '$2y$10$4t.am9ZfDdWwMVMsU7j0o.CT/ktgUnZGQryQ9u4PSfZORtglzm2cu', 'usuario', '2024-09-23 19:25:13', 1, 0, NULL, '$2y$10$d/O/ZtyjDLh2cnqIfMA6B.qJI.tO/KIAmap1tcs9XIt4N1o4lfZx.', '$2y$10$B9aNhnniN46zjaMH4jHYMeavFSctlyTkj9lGldmqFZ974tlyNNGPe', '$2y$10$m7dLYKwS3ahag8anNlh/geKw3ozWvdssSSDI29d/h1reH4QNwWryu'),
+(10, 'Caro', 'caro@caro.com', '$2y$10$uiRxz3qsak4W0xDAr3iYaOIulvvlMjktHP7dMKKz.ef3zpU0J7Ubi', 'usuario', '2024-09-23 19:54:09', 1, 0, NULL, '$2y$10$iZhISTTzocOxAhA17nyI6uPX4orRL7IjNQzr3crNtlwIVSoovkzse', '$2y$10$mnt9daCnD9nRDNx3zS/PYuiyr5x5RNqgvFZAm2yiEHNtZoAq9eYg.', '$2y$10$ROh6ji4O1wf1M09rPhLNS.JzEGtN5XCnJLlvH8qnTGTicoBqu.vFO'),
+(11, 'Mila', 'mila@123.com', '$2y$10$zhboXOqxt9kQ511xYqvZOecYRprLqbKPrqeG0/G4xUxYs3nxy98MW', 'usuario', '2024-09-23 19:56:02', 1, 0, NULL, '$2y$10$biT5b8hVBXyHSGEh7LJifux6X2pME3aHW/B2rNPge9cDOiaO2ri9m', '$2y$10$O92Dj2qfL5FwjIP2FN37wupXWNsirTJSsQmIbdjUpy6Sftynb.HHi', '$2y$10$x6x19RaGeSVSi53X6Ml1aO.sqQaXr.Lkk.tgZ6owTXS0bkzcqIEcq'),
+(12, 'Ambar', 'ambar@123.com', '$2y$10$kLzv233GSE6WCDsindUyxeQlWK3UAxT0jMw9T4c/yUbRlMOfPLmFS', 'usuario', '2024-09-23 20:03:05', 1, 0, NULL, '$2y$10$1xJeA6zzvm.FrDY67EjdAO/fH/uBbjijBcBXZfMRPHKC8jKGLlPr2', '$2y$10$RQGg2lQzN5oL84ta8JkI2eKl77G./MZ6VleiqLZl0sePQmmiTfZzW', '$2y$10$c2I4SS7NE/mfCQ5llIwwLOUxshgjW5Z2YWyESAbhRKfXd.eoKn.5u');
 
 -- --------------------------------------------------------
 
@@ -142,7 +147,17 @@ INSERT INTO `user_logs` (`id`, `user_id`, `action`, `timestamp`) VALUES
 (67, 7, 'login', '2024-09-23 12:18:01'),
 (68, 7, 'logout', '2024-09-23 12:18:03'),
 (69, 7, 'login', '2024-09-23 12:19:24'),
-(70, 7, 'logout', '2024-09-23 12:19:26');
+(70, 7, 'logout', '2024-09-23 12:19:26'),
+(71, 8, 'login', '2024-09-23 16:05:04'),
+(72, 8, 'logout', '2024-09-23 16:05:15'),
+(73, 8, 'login', '2024-09-23 16:06:34'),
+(74, 8, 'logout', '2024-09-23 16:06:40'),
+(75, 12, 'create', '2024-09-23 17:03:05'),
+(76, 1, 'login', '2024-09-23 17:06:43'),
+(77, 1, 'logout', '2024-09-23 17:15:03'),
+(78, 9, 'password_reset', '2024-09-23 17:26:17'),
+(79, 1, 'login', '2024-09-23 17:26:34'),
+(80, 1, 'logout', '2024-09-23 17:29:12');
 
 --
 -- Índices para tablas volcadas
@@ -171,13 +186,13 @@ ALTER TABLE `user_logs`
 -- AUTO_INCREMENT de la tabla `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 
 --
 -- AUTO_INCREMENT de la tabla `user_logs`
 --
 ALTER TABLE `user_logs`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=71;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=81;
 
 --
 -- Restricciones para tablas volcadas
