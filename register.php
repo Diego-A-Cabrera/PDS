@@ -11,6 +11,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $email = trim($_POST['email']);
     $password = trim($_POST['password']);
     $confirm_password = trim($_POST['confirm_password']);
+    $security_question_1 = trim($_POST['security_question_1']);
+    $security_question_2 = trim($_POST['security_question_2']);
+    $security_question_3 = trim($_POST['security_question_3']);
 
     // Validar campos
     if (!empty($username) && !empty($email) && !empty($password) && !empty($confirm_password)) {
@@ -33,12 +36,21 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     // Hash de la contraseña
                     $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
 
-                    // Insertar nuevo usuario en la base de datos con rol predeterminado de 'usuario'
-                    $stmt = $pdo->prepare("INSERT INTO users (username, email, password, role, is_active) VALUES (:username, :email, :password, 'usuario', 1)");
+                    // Insertar nuevo usuario en la base de datos con marcadores de posición correctos
+                    $stmt = $pdo->prepare("INSERT INTO users 
+                        (username, email, password, role, is_active, security_question_1, security_question_2, security_question_3) 
+                        VALUES (:username, :email, :password, :role, :is_active, :security_question_1, :security_question_2, :security_question_3)");
+
+                    // Ejecutar la consulta con todos los valores correctamente vinculados
                     $stmt->execute([
-                        'username' => $username,
-                        'email' => $email,
-                        'password' => $hashedPassword
+                        ':username' => $username,
+                        ':email' => $email,
+                        ':password' => $hashedPassword,
+                        ':role' => 'usuario',
+                        ':is_active' => 1,
+                        ':security_question_1' => $security_question_1,
+                        ':security_question_2' => $security_question_2,
+                        ':security_question_3' => $security_question_3
                     ]);
 
                     // Mensaje de éxito
@@ -63,6 +75,7 @@ function validate_password($password)
         preg_match('/[\W_]/', $password);   // Al menos un carácter especial
 }
 ?>
+
 
 <!DOCTYPE html>
 <html lang="es">
@@ -197,7 +210,24 @@ function validate_password($password)
             <label for="confirm_password">Confirmar contraseña</label>
             <input type="password" name="confirm_password" id="confirm_password" required>
 
+            <div>
+                <label for="security_question_1">¿Cuál fue el nombre de la escuela a la que fuiste?</label>
+                <input type="text" id="security_question_1" name="security_question_1" required>
+            </div>
+
+            <div>
+                <label for="security_question_2">¿Cuál fue el nombre de tu primera mascota?</label>
+                <input type="text" id="security_question_2" name="security_question_2" required>
+            </div>
+
+            <div>
+                <label for="security_question_3">¿Cuál es tu película favorita?</label>
+                <input type="text" id="security_question_3" name="security_question_3" required>
+            </div>
+
+
             <input type="submit" value="Registrarse">
+
         </form>
 
         <div class="footer">

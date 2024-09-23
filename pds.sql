@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 17-09-2024 a las 01:24:12
--- Versión del servidor: 10.4.28-MariaDB
--- Versión de PHP: 8.2.4
+-- Tiempo de generación: 23-09-2024 a las 17:30:32
+-- Versión del servidor: 10.4.32-MariaDB
+-- Versión de PHP: 8.2.12
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -36,20 +36,24 @@ CREATE TABLE `users` (
   `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
   `is_active` tinyint(1) DEFAULT 1,
   `failed_attempts` int(11) DEFAULT 0,
-  `last_attempt` timestamp NULL DEFAULT NULL
+  `last_attempt` timestamp NULL DEFAULT NULL,
+  `security_question_1` varchar(255) DEFAULT NULL,
+  `security_question_2` varchar(255) DEFAULT NULL,
+  `security_question_3` varchar(255) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Volcado de datos para la tabla `users`
 --
 
-INSERT INTO `users` (`id`, `username`, `email`, `password`, `role`, `created_at`, `is_active`, `failed_attempts`, `last_attempt`) VALUES
-(1, 'Admin', 'admin@admin.com', '$2y$10$dQlMFVp5/1usndlIlnitXuZuIqGvbP1GT8Yx9tVPy1BwEyiSebpXy', 'administrador', '2024-09-14 21:59:00', 1, 0, NULL),
-(2, 'Diego', 'diego@diego.com', '$2y$10$amsOyDbpLZ665dF3WiMQQexCuKMEPmAh6dk/289BuubC2XrMiIufO', 'administrador', '2024-09-15 16:42:29', 1, 0, NULL),
-(3, 'User', 'user@user.com', '$2y$10$DlGatdMWDJNW1r/Stp16vOrJWIQFMk1j0yDYMAQixDYvxjLZOxagG', 'usuario', '2024-09-15 16:43:44', 1, 0, NULL),
-(4, 'Ema', 'ema@ema.com', '$2y$10$dzCbex43D0fucIUSyHXzSe7P7QFinav5jYZ4SbXwKt2z6lz3nshAG', 'usuario', '2024-09-16 22:49:16', 1, 0, NULL),
-(5, 'Fabri', 'Fabri@123.com', '$2y$10$OswG5NCwF//dsXJAzbKAluqbCVvRO4mjfuE8OSrBZ1leeAZdaEhfy', 'usuario', '2024-09-16 23:01:56', 1, 0, NULL),
-(6, 'Marce', 'marce@123.com', '$2y$10$WDURy9mjgbrvAKdEeU70F.tMGKMSXcwyPPZsdxRZLxFlsEdSuoxYO', 'usuario', '2024-09-16 23:05:24', 1, 0, NULL);
+INSERT INTO `users` (`id`, `username`, `email`, `password`, `role`, `created_at`, `is_active`, `failed_attempts`, `last_attempt`, `security_question_1`, `security_question_2`, `security_question_3`) VALUES
+(1, 'Admin', 'admin@admin.com', '$2y$10$dQlMFVp5/1usndlIlnitXuZuIqGvbP1GT8Yx9tVPy1BwEyiSebpXy', 'administrador', '2024-09-14 21:59:00', 1, 0, NULL, NULL, NULL, NULL),
+(2, 'Diego', 'diego@diego.com', '$2y$10$amsOyDbpLZ665dF3WiMQQexCuKMEPmAh6dk/289BuubC2XrMiIufO', 'administrador', '2024-09-15 16:42:29', 1, 0, NULL, NULL, NULL, NULL),
+(3, 'User', 'user@user.com', '$2y$10$DlGatdMWDJNW1r/Stp16vOrJWIQFMk1j0yDYMAQixDYvxjLZOxagG', 'usuario', '2024-09-15 16:43:44', 1, 0, NULL, NULL, NULL, NULL),
+(4, 'Ema', 'ema@ema.com', '$2y$10$dzCbex43D0fucIUSyHXzSe7P7QFinav5jYZ4SbXwKt2z6lz3nshAG', 'usuario', '2024-09-16 22:49:16', 1, 0, NULL, NULL, NULL, NULL),
+(5, 'Fabri', 'Fabri@123.com', '$2y$10$OswG5NCwF//dsXJAzbKAluqbCVvRO4mjfuE8OSrBZ1leeAZdaEhfy', 'usuario', '2024-09-16 23:01:56', 1, 0, NULL, NULL, NULL, NULL),
+(6, 'Marce', 'marce@123.com', '$2y$10$WDURy9mjgbrvAKdEeU70F.tMGKMSXcwyPPZsdxRZLxFlsEdSuoxYO', 'usuario', '2024-09-16 23:05:24', 1, 0, NULL, NULL, NULL, NULL),
+(7, 'Joaco', 'joaco@joaco.com', '$2y$10$9sxdofSdkAm9uYUA3d83q.Z77NX.aheLUj6ahs.qjIFFcYJHKSof.', 'usuario', '2024-09-23 14:57:04', 1, 0, NULL, '12345', 'qwerty', 'asdfg');
 
 -- --------------------------------------------------------
 
@@ -133,7 +137,12 @@ INSERT INTO `user_logs` (`id`, `user_id`, `action`, `timestamp`) VALUES
 (62, 1, 'logout', '2024-09-16 20:06:57'),
 (63, 6, 'login', '2024-09-16 20:07:03'),
 (64, 6, 'logout', '2024-09-16 20:07:13'),
-(65, 1, 'login', '2024-09-16 20:10:47');
+(65, 1, 'login', '2024-09-16 20:10:47'),
+(66, 7, 'failed login attempt', '2024-09-23 12:17:53'),
+(67, 7, 'login', '2024-09-23 12:18:01'),
+(68, 7, 'logout', '2024-09-23 12:18:03'),
+(69, 7, 'login', '2024-09-23 12:19:24'),
+(70, 7, 'logout', '2024-09-23 12:19:26');
 
 --
 -- Índices para tablas volcadas
@@ -162,13 +171,13 @@ ALTER TABLE `user_logs`
 -- AUTO_INCREMENT de la tabla `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT de la tabla `user_logs`
 --
 ALTER TABLE `user_logs`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=66;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=71;
 
 --
 -- Restricciones para tablas volcadas
