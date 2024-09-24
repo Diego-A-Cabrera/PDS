@@ -10,17 +10,21 @@ if (!isset($_SESSION['user_id'])) {
 
 // Variables para almacenar los filtros
 $username_filter = isset($_GET['username']) ? $_GET['username'] : '';
+$email_filter = isset($_GET['email']) ? $_GET['email'] : ''; // Filtro por email
 $action_filter = isset($_GET['action']) ? $_GET['action'] : '';
 $date_from = isset($_GET['date_from']) ? $_GET['date_from'] : '';
 $date_to = isset($_GET['date_to']) ? $_GET['date_to'] : '';
 
 // Construir la consulta SQL dinámica con filtros
-$query = "SELECT user_logs.*, users.username FROM user_logs 
+$query = "SELECT user_logs.*, users.username, users.email FROM user_logs 
           JOIN users ON user_logs.user_id = users.id WHERE 1=1";
 
 // Agregar filtros si existen
 if ($username_filter) {
     $query .= " AND users.username LIKE :username";
+}
+if ($email_filter) {
+    $query .= " AND users.email LIKE :email"; // Filtro por email
 }
 if ($action_filter) {
     $query .= " AND action = :action";
@@ -37,7 +41,12 @@ $stmt = $pdo->prepare($query);
 
 // Asignar parámetros a la consulta
 if ($username_filter) {
+    $username_filter = "%$username_filter%"; // Usar LIKE con comodines
     $stmt->bindParam(':username', $username_filter, PDO::PARAM_STR);
+}
+if ($email_filter) {
+    $email_filter = "%$email_filter%"; // Usar LIKE con comodines
+    $stmt->bindParam(':email', $email_filter, PDO::PARAM_STR);
 }
 if ($action_filter) {
     $stmt->bindParam(':action', $action_filter, PDO::PARAM_STR);
@@ -167,25 +176,21 @@ $logs = $stmt->fetchAll(PDO::FETCH_ASSOC);
             <label for="username">Filtrar por Nombre de Usuario:</label>
             <input type="text" name="username" id="username" value="<?php echo htmlspecialchars($username_filter); ?>">
 
+            <!-- Filtro por correo electrónico -->
+            <label for="email">Filtrar por Correo Electrónico:</label>
+            <input type="text" name="email" id="email" value="<?php echo htmlspecialchars($email_filter); ?>">
+
             <!-- Filtro por acción -->
             <label for="action">Filtrar por Acción:</label>
             <select name="action" id="action">
                 <option value="">Seleccionar acción</option>
-                <option value="login" <?php if ($action_filter === 'login')
-                    echo 'selected'; ?>>Login</option>
-                <option value="failed login attempt" <?php if ($action_filter === 'failed login attempt')
-                    echo 'selected'; ?>>Failed Login
-                </option>
-                <option value="logout" <?php if ($action_filter === 'logout')
-                    echo 'selected'; ?>>Logout</option>
-                <option value="create" <?php if ($action_filter === 'create')
-                    echo 'selected'; ?>>Create</option>
-                <option value="block" <?php if ($action_filter === 'block')
-                    echo 'selected'; ?>>Block</option>
-                <option value="unblock" <?php if ($action_filter === 'unblock')
-                    echo 'selected'; ?>>Unblock</option>
-                <option value="too many failed attempts" <?php if ($action_filter === 'too many failed attempts')
-                    echo 'selected'; ?>>Too many failed attempts</option>
+                <option value="login" <?php if ($action_filter === 'login') echo 'selected'; ?>>Login</option>
+                <option value="failed login attempt" <?php if ($action_filter === 'failed login attempt') echo 'selected'; ?>>Failed Login</option>
+                <option value="logout" <?php if ($action_filter === 'logout') echo 'selected'; ?>>Logout</option>
+                <option value="create" <?php if ($action_filter === 'create') echo 'selected'; ?>>Create</option>
+                <option value="block" <?php if ($action_filter === 'block') echo 'selected'; ?>>Block</option>
+                <option value="unblock" <?php if ($action_filter === 'unblock') echo 'selected'; ?>>Unblock</option>
+                <option value="too many failed attempts" <?php if ($action_filter === 'too many failed attempts') echo 'selected'; ?>>Too many failed attempts</option>
             </select>
 
             <!-- Filtro por rango de fechas -->
@@ -204,6 +209,7 @@ $logs = $stmt->fetchAll(PDO::FETCH_ASSOC);
         <thead>
             <tr>
                 <th>Nombre de Usuario</th>
+                <th>Correo Electrónico</th>
                 <th>Acción</th>
                 <th>Fecha y Hora</th>
             </tr>
@@ -212,6 +218,7 @@ $logs = $stmt->fetchAll(PDO::FETCH_ASSOC);
             <?php foreach ($logs as $log): ?>
                 <tr>
                     <td><?php echo htmlspecialchars($log['username']); ?></td>
+                    <td><?php echo htmlspecialchars($log['email']); ?></td>
                     <td><?php echo htmlspecialchars($log['action']); ?></td>
                     <td><?php echo htmlspecialchars($log['timestamp']); ?></td>
                 </tr>
