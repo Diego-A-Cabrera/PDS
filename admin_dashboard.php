@@ -139,6 +139,9 @@ $users = $stmt->fetchAll(PDO::FETCH_ASSOC);
         }
 
         .filter-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
             margin-top: 100px;
             padding: 20px;
             background-color: #23272a;
@@ -146,18 +149,22 @@ $users = $stmt->fetchAll(PDO::FETCH_ASSOC);
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
         }
 
+        .filter-container div {
+            flex: 1;
+            padding: 0 10px;
+        }
+
         .filter-container label {
             color: #99aab5;
             font-weight: bold;
-            display: block;
             margin-bottom: 8px;
+            display: block;
         }
 
         .filter-container input,
         .filter-container select {
             width: 100%;
             padding: 8px;
-            margin-bottom: 20px;
             background-color: #2f3136;
             border: 1px solid #444;
             color: #ffffff;
@@ -165,10 +172,12 @@ $users = $stmt->fetchAll(PDO::FETCH_ASSOC);
         }
 
         .filter-container input[type="submit"] {
+            width: auto;
             background-color: #7289da;
             cursor: pointer;
             font-weight: bold;
             transition: background-color 0.3s;
+            margin-top: 10px;
         }
 
         .filter-container input[type="submit"]:hover {
@@ -186,7 +195,8 @@ $users = $stmt->fetchAll(PDO::FETCH_ASSOC);
             color: #ffffff;
         }
 
-        th, td {
+        th,
+        td {
             padding: 10px;
             text-align: left;
             border-bottom: 1px solid #444;
@@ -231,7 +241,7 @@ $users = $stmt->fetchAll(PDO::FETCH_ASSOC);
     </style>
 </head>
 
-<body>
+<form>
 
     <header class="header">
         <div class="user-info">
@@ -249,61 +259,77 @@ $users = $stmt->fetchAll(PDO::FETCH_ASSOC);
     <!-- Formulario de filtros con nueva estética -->
     <div class="filter-container">
         <form method="GET" action="admin_dashboard.php">
-            <label for="username">Filtrar por Nombre de Usuario:</label>
-            <input type="text" name="username" id="username" value="<?php echo htmlspecialchars($username_filter); ?>">
+            <div>
+                <label for="username">Filtrar por Nombre de Usuario:</label>
+                <input type="text" name="username" id="username"
+                    value="<?php echo htmlspecialchars($username_filter); ?>">
+            </div>
 
-            <label for="email">Filtrar por Email:</label>
-            <input type="text" name="email" id="email" value="<?php echo htmlspecialchars($email_filter); ?>">
+            <div>
+                <label for="email">Filtrar por Email:</label>
+                <input type="text" name="email" id="email" value="<?php echo htmlspecialchars($email_filter); ?>">
+            </div>
 
-            <label for="role">Filtrar por Rol:</label>
-            <select name="role" id="role">
-                <option value="">Seleccionar Rol</option>
-                <option value="usuario" <?php if ($role_filter === 'usuario') echo 'selected'; ?>>Usuario</option>
-                <option value="administrador" <?php if ($role_filter === 'administrador') echo 'selected'; ?>>Administrador</option>
-            </select>
+            <div>
+                <label for="role">Filtrar por Rol:</label>
+                <select name="role" id="role">
+                    <option value="">Seleccionar Rol</option>
+                    <option value="usuario" <?php if ($role_filter === 'usuario')
+                        echo 'selected'; ?>>Usuario</option>
+                    <option value="administrador" <?php if ($role_filter === 'administrador')
+                        echo 'selected'; ?>>
+                        Administrador</option>
+                </select>
+            </div>
 
-            <label for="status">Filtrar por Estado:</label>
-            <select name="status" id="status">
-                <option value="">Seleccionar Estado</option>
-                <option value="1" <?php if ($status_filter === '1') echo 'selected'; ?>>Activo</option>
-                <option value="0" <?php if ($status_filter === '0') echo 'selected'; ?>>Bloqueado</option>
-            </select>
+            <div>
+                <label for="status">Filtrar por Estado:</label>
+                <select name="status" id="status">
+                    <option value="">Seleccionar Estado</option>
+                    <option value="1" <?php if ($status_filter === '1')
+                        echo 'selected'; ?>>Activo</option>
+                    <option value="0" <?php if ($status_filter === '0')
+                        echo 'selected'; ?>>Bloqueado</option>
+                </select>
+            </div>
 
-            <input type="submit" value="Aplicar Filtros">
-        </form>
+            <div>
+                <input type="submit" value="Aplicar Filtros">
+            </div>
     </div>
+</form>
 
-    <div class="table-container">
-        <table>
-            <thead>
+<div class="table-container">
+    <table>
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>Username</th>
+                <th>Email</th>
+                <th>Role</th>
+                <th>Estado</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            <?php foreach ($users as $user): ?>
                 <tr>
-                    <th>#</th>
-                    <th>Username</th>
-                    <th>Email</th>
-                    <th>Role</th>
-                    <th>Estado</th>
-                    <th>Acciones</th>
+                    <td><?php echo htmlspecialchars($user['id']); ?></td>
+                    <td><?php echo htmlspecialchars($user['username']); ?></td>
+                    <td><?php echo htmlspecialchars($user['email']); ?></td>
+                    <td><?php echo htmlspecialchars($user['role']); ?></td>
+                    <td><?php echo $user['is_active'] ? 'Activo' : 'Bloqueado'; ?></td>
+                    <td>
+                        <a href="admin_dashboard.php?toggle_active=1&id=<?php echo $user['id']; ?>"
+                            class="<?php echo $user['is_active'] ? 'deactivate-btn' : 'activate-btn'; ?>">
+                            <?php echo $user['is_active'] ? 'Bloquear' : 'Activar'; ?>
+                        </a>
+                    </td>
                 </tr>
-            </thead>
-            <tbody>
-                <?php foreach ($users as $user): ?>
-                    <tr>
-                        <td><?php echo htmlspecialchars($user['id']); ?></td>
-                        <td><?php echo htmlspecialchars($user['username']); ?></td>
-                        <td><?php echo htmlspecialchars($user['email']); ?></td>
-                        <td><?php echo htmlspecialchars($user['role']); ?></td>
-                        <td><?php echo $user['is_active'] ? 'Activo' : 'Bloqueado'; ?></td>
-                        <td>
-                            <a href="admin_dashboard.php?toggle_active=1&id=<?php echo $user['id']; ?>"
-                                class="<?php echo $user['is_active'] ? 'deactivate-btn' : 'activate-btn'; ?>">
-                                <?php echo $user['is_active'] ? 'Bloquear' : 'Activar'; ?>
-                            </a>
-                        </td>
-                    </tr>
-                <?php endforeach; ?>
-            </tbody>
-        </table>
-    </div>
+            <?php endforeach; ?>
+        </tbody>
+    </table>
+</div>
 </body>
 
 </html>

@@ -16,22 +16,67 @@ if (!$isAdmin && !$isUser) {
     echo "No tienes permiso para ver este contenido.";
     exit();
 }
+
+// Inicializar filtros
+$username_filter = isset($_GET['username']) ? $_GET['username'] : '';
+$email_filter = isset($_GET['email']) ? $_GET['email'] : '';
+?>
+<?php
+include 'db.php';
+
+// Verificar si hay filtros
+$sql = "SELECT id, username, email, password, role, created_at FROM users WHERE 1=1";
+$params = [];
+
+// Filtrar por username si está presente
+if (!empty($username_filter)) {
+    $sql .= " AND username LIKE :username";
+    $params[':username'] = '%' . $username_filter . '%';
+}
+
+// Filtrar por email si está presente
+if (!empty($email_filter)) {
+    $sql .= " AND email LIKE :email";
+    $params[':email'] = '%' . $email_filter . '%';
+}
+
+try {
+    $stmt = $pdo->prepare($sql);
+    $stmt->execute($params);
+
+    while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+        echo '<tr>';
+        echo '<td>' . htmlspecialchars($row['id']) . '</td>';
+        if ($isAdmin) {
+            echo '<td>' . htmlspecialchars($row['username']) . '</td>';
+        }
+        echo '<td>' . htmlspecialchars($row['email']) . '</td>';
+        echo '<td>********</td>'; // Contraseña oculta
+        if ($isAdmin) {
+            echo '<td>' . htmlspecialchars($row['role']) . '</td>';
+            echo '<td>' . htmlspecialchars($row['created_at']) . '</td>';
+        }
+        echo '</tr>';
+    }
+} catch (PDOException $e) {
+    echo 'Error: ' . $e->getMessage();
+}
 ?>
 
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard</title>
-    <!-- Estilos tomados de admin_dashboard -->
     <link href="https://fonts.googleapis.com/css?family=Roboto:400,700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="styles.css"> <!-- Reutilizamos el CSS existente -->
+    <link rel="stylesheet" href="styles.css">
     <style>
         /* Estilo del encabezado y la navegación */
         .header {
             width: 100%;
-            background-color: #333; /* Fondo oscuro */
+            background-color: #333;
             color: white;
             padding: 15px;
             display: flex;
@@ -47,7 +92,7 @@ if (!$isAdmin && !$isUser) {
 
         body {
             font-family: 'Roboto', sans-serif;
-            background-color: #1c1e22; /* Fondo oscuro */
+            background-color: #1c1e22;
             color: white;
             margin: 0;
             padding: 20px;
@@ -80,7 +125,7 @@ if (!$isAdmin && !$isUser) {
         }
 
         .container {
-            max-width: 100%; /* Ocupa todo el ancho del navegador */
+            max-width: 100%;
             margin: 0 auto;
         }
 
@@ -90,7 +135,7 @@ if (!$isAdmin && !$isUser) {
 
         .table-container {
             margin-top: 20px;
-            background-color: #2c2f33; /* Fondo oscuro para la tabla */
+            background-color: #2c2f33;
             border-radius: 8px;
             padding: 20px;
         }
@@ -101,7 +146,8 @@ if (!$isAdmin && !$isUser) {
             color: white;
         }
 
-        th, td {
+        th,
+        td {
             padding: 10px;
             text-align: left;
             border-bottom: 1px solid #444;
@@ -116,6 +162,7 @@ if (!$isAdmin && !$isUser) {
         }
     </style>
 </head>
+
 <body>
 
     <div class="header">
@@ -126,6 +173,25 @@ if (!$isAdmin && !$isUser) {
         <div class="buttons">
             <a href="logout.php">Cerrar sesión</a>
         </div>
+    </div>
+
+    <div class="filter-container">
+        <form method="GET" action="dashboard.php">
+            <div>
+                <label for="username">Filtrar por Nombre de Usuario:</label>
+                <input type="text" name="username" id="username"
+                    value="<?php echo htmlspecialchars($username_filter); ?>">
+            </div>
+
+            <div>
+                <label for="email">Filtrar por Email:</label>
+                <input type="text" name="email" id="email" value="<?php echo htmlspecialchars($email_filter); ?>">
+            </div>
+
+            <div>
+                <input type="submit" value="Aplicar Filtros">
+            </div>
+        </form>
     </div>
 
     <div class="container">
@@ -186,4 +252,5 @@ if (!$isAdmin && !$isUser) {
     </div>
 
 </body>
+
 </html>
