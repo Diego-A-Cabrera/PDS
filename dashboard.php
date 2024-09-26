@@ -125,16 +125,17 @@ try {
             margin-top: 20px;
             background-color: #2c2f33;
             border-radius: 8px;
-            padding: 20px;
+            padding: 8px;
         }
 
         table {
             width: 100%;
             border-collapse: collapse;
-            color: white;
+            padding: 20px;
         }
 
-        th, td {
+        th,
+        td {
             padding: 10px;
             text-align: left;
             border-bottom: 1px solid #444;
@@ -142,6 +143,7 @@ try {
 
         th {
             background-color: #23272a;
+            color: #f1f1f1;
         }
 
         tr:hover {
@@ -153,9 +155,9 @@ try {
             display: flex;
             justify-content: center;
             background-color: #2c2f33;
-            padding: 15px;
-            border-radius: 8px;
-            margin-top: 20px;
+            padding: 8px;
+            border-radius: 10px;
+            margin-top: 30px;
         }
 
         .filter-container form {
@@ -169,7 +171,7 @@ try {
         .filter-container div {
             flex: 1;
             margin: 0 10px;
-            min-width: 200px;
+            min-width: 100px;
         }
 
         .filter-container label {
@@ -189,7 +191,7 @@ try {
 
         .filter-container input[type="submit"] {
             margin-top: 25px;
-            padding: 10px;
+            padding: 8px;
             background-color: #4a76a8;
             color: white;
             border: none;
@@ -200,7 +202,6 @@ try {
         .filter-container input[type="submit"]:hover {
             background-color: #3c5a7b;
         }
-
     </style>
 </head>
 
@@ -216,28 +217,30 @@ try {
         </div>
     </div>
 
-   
 
-        <div class="content">
-            <h1>Panel de Usuario</h1>
-            <div class="container">
-        <div class="filter-container">
-            <form method="GET" action="dashboard.php">
-                <div>
-                    <label for="username">Filtrar por Nombre de Usuario:</label>
-                    <input type="text" name="username" id="username" value="<?php echo htmlspecialchars($username_filter); ?>">
-                </div>
 
-                <div>
-                    <label for="email">Filtrar por Email:</label>
-                    <input type="text" name="email" id="email" value="<?php echo htmlspecialchars($email_filter); ?>">
-                </div>
+    <div class="content">
+        <h1>Panel de Usuario</h1>
+        <div class="container">
+            <div class="filter-container">
+                <form method="GET" action="dashboard.php">
+                    <div>
+                        <label for="username">Filtrar por Usuario:</label>
+                        <input type="text" name="username" id="username"
+                            value="<?php echo htmlspecialchars($username_filter); ?>">
+                    </div>
 
-                <div>
-                    <input type="submit" value="Aplicar Filtros">
-                </div>
-            </form>
-        </div>
+                    <div>
+                        <label for="email">Filtrar por Email:</label>
+                        <input type="text" name="email" id="email"
+                            value="<?php echo htmlspecialchars($email_filter); ?>">
+                    </div>
+
+                    <div>
+                        <input type="submit" value="Aplicar Filtros">
+                    </div>
+                </form>
+            </div>
             <div class="table-container">
                 <table>
                     <thead>

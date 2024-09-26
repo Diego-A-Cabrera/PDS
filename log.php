@@ -113,8 +113,8 @@ $logs = $stmt->fetchAll(PDO::FETCH_ASSOC);
         input[type="text"],
         input[type="date"],
         select {
-            padding: 8px;
-            margin-right: 10px;
+            padding: 3px;
+            margin-right: 5px;
             border-radius: 5px;
             background-color: #23272a;
             color: white;
@@ -173,24 +173,31 @@ $logs = $stmt->fetchAll(PDO::FETCH_ASSOC);
     <div class="filter-container">
         <form method="GET" action="log.php">
             <!-- Filtro por nombre de usuario -->
-            <label for="username">Filtrar por Nombre de Usuario:</label>
+            <label for="username">Filtrar por Usuario:</label>
             <input type="text" name="username" id="username" value="<?php echo htmlspecialchars($username_filter); ?>">
 
             <!-- Filtro por correo electrónico -->
-            <label for="email">Filtrar por Correo Electrónico:</label>
+            <label for="email">Filtrar por Email:</label>
             <input type="text" name="email" id="email" value="<?php echo htmlspecialchars($email_filter); ?>">
 
             <!-- Filtro por acción -->
             <label for="action">Filtrar por Acción:</label>
             <select name="action" id="action">
                 <option value="">Seleccionar acción</option>
-                <option value="login" <?php if ($action_filter === 'login') echo 'selected'; ?>>Login</option>
-                <option value="failed login attempt" <?php if ($action_filter === 'failed login attempt') echo 'selected'; ?>>Failed Login</option>
-                <option value="logout" <?php if ($action_filter === 'logout') echo 'selected'; ?>>Logout</option>
-                <option value="create" <?php if ($action_filter === 'create') echo 'selected'; ?>>Create</option>
-                <option value="block" <?php if ($action_filter === 'block') echo 'selected'; ?>>Block</option>
-                <option value="unblock" <?php if ($action_filter === 'unblock') echo 'selected'; ?>>Unblock</option>
-                <option value="too many failed attempts" <?php if ($action_filter === 'too many failed attempts') echo 'selected'; ?>>Too many failed attempts</option>
+                <option value="login" <?php if ($action_filter === 'login')
+                    echo 'selected'; ?>>Login</option>
+                <option value="failed login attempt" <?php if ($action_filter === 'failed login attempt')
+                    echo 'selected'; ?>>Failed Login</option>
+                <option value="logout" <?php if ($action_filter === 'logout')
+                    echo 'selected'; ?>>Logout</option>
+                <option value="create" <?php if ($action_filter === 'create')
+                    echo 'selected'; ?>>Create</option>
+                <option value="block" <?php if ($action_filter === 'block')
+                    echo 'selected'; ?>>Block</option>
+                <option value="unblock" <?php if ($action_filter === 'unblock')
+                    echo 'selected'; ?>>Unblock</option>
+                <option value="too many failed attempts" <?php if ($action_filter === 'too many failed attempts')
+                    echo 'selected'; ?>>Too many failed attempts</option>
             </select>
 
             <!-- Filtro por rango de fechas -->

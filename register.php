@@ -1,5 +1,7 @@
 <?php
 include 'db.php'; // Incluye la conexión a la base de datos
+include 'toggleConfirmPasswordVisibility.php';
+include 'togglePasswordVisibility.php';
 session_start(); // Inicia la sesión
 
 $error = ''; // Variable para almacenar mensajes de error
@@ -126,7 +128,7 @@ function validate_password($password)
         h2 {
             text-align: center;
             color: #4a76a8;
-            margin-bottom: 20px;
+            margin-bottom: 8px;
         }
 
         label {
@@ -145,6 +147,25 @@ function validate_password($password)
             border-radius: 5px;
             background-color: #23272a;
             color: white;
+        }
+
+        .password-container {
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+
+        .password-container input {
+            padding-right: 30px;
+            /* Deja espacio para el ícono */
+        }
+
+        .password-container .toggle-password {
+            position: absolute;
+            right: 5px;
+            transform: translateY(-50%);
+            cursor: pointer;
+            font-size: 18px;
         }
 
         input[type="submit"] {
@@ -220,25 +241,43 @@ function validate_password($password)
             <label for="email">Correo electrónico</label>
             <input type="email" name="email" id="email" required>
 
-            <label for="password">Contraseña</label>
-            <input type="password" name="password" id="password" required>
+            <label for="password">Contraseña:</label>
+            <div class="password-container">
+                <input type="password" name="password" id="password" required>
+                <span class="toggle-password" onclick="togglePasswordVisibility('password', this)">👁️</span>
+            </div>
 
             <label for="confirm_password">Confirmar contraseña</label>
-            <input type="password" name="confirm_password" id="confirm_password" required>
+            <div class="password-container">
+                <input type="password" name="confirm_password" id="confirm_password" required>
+                <span class="toggle-password" onclick="togglePasswordVisibility('confirm_password', this)">👁️</span>
+            </div>
 
             <div>
                 <label for="security_question_1">¿Cuál fue el nombre de la escuela a la que fuiste?</label>
-                <input type="text" id="security_question_1" name="security_question_1" required>
+                <div class="password-container">
+                    <input type="password" id="security_question_1" name="security_question_1" required>
+                    <span class="toggle-password"
+                        onclick="togglePasswordVisibility('security_question_1', this)">👁️</span>
+                </div>
             </div>
 
             <div>
                 <label for="security_question_2">¿Cuál fue el nombre de tu primera mascota?</label>
-                <input type="text" id="security_question_2" name="security_question_2" required>
+                <div class="password-container">
+                    <input type="password" id="security_question_2" name="security_question_2" required>
+                    <span class="toggle-password"
+                        onclick="togglePasswordVisibility('security_question_2', this)">👁️</span>
+                </div>
             </div>
 
             <div>
                 <label for="security_question_3">¿Cuál es tu película favorita?</label>
-                <input type="text" id="security_question_3" name="security_question_3" required>
+                <div class="password-container">
+                    <input type="password" id="security_question_3" name="security_question_3" required>
+                    <span class="toggle-password"
+                        onclick="togglePasswordVisibility('security_question_3', this)">👁️</span>
+                </div>
             </div>
 
 
