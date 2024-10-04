@@ -67,97 +67,9 @@ $logs = $stmt->fetchAll(PDO::FETCH_ASSOC);
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/log.css">
     <title>Logs de Usuarios</title>
-    <style>
-        body {
-            font-family: 'Roboto', sans-serif;
-            background-color: #1c1e22;
-            color: white;
-            margin: 0;
-            padding: 20px;
-        }
-
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-bottom: 20px;
-        }
-
-        th,
-        td {
-            padding: 10px;
-            text-align: left;
-            border: 1px solid #333;
-        }
-
-        th {
-            background-color: #4a76a8;
-            color: white;
-        }
-
-        td {
-            background-color: #2c2f33;
-        }
-
-        .filter-container {
-            background-color: #2c2f33;
-            padding: 20px;
-            border-radius: 8px;
-            margin-bottom: 20px;
-        }
-
-        label {
-            color: white;
-        }
-
-        input[type="text"],
-        input[type="date"],
-        select {
-            padding: 3px;
-            margin-right: 5px;
-            border-radius: 5px;
-            background-color: #23272a;
-            color: white;
-            border: none;
-        }
-
-        input[type="submit"] {
-            padding: 10px;
-            background-color: #4a76a8;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 16px;
-        }
-
-        input[type="submit"]:hover {
-            background-color: #3c5a7b;
-        }
-
-        /* Estilo para los botones en el margen superior derecho */
-        .btn-container {
-            position: absolute;
-            top: 20px;
-            right: 20px;
-        }
-
-        .btn {
-            padding: 10px;
-            background-color: #4a76a8;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 16px;
-            text-decoration: none;
-            margin-left: 10px;
-        }
-
-        .btn:hover {
-            background-color: #3c5a7b;
-        }
-    </style>
+    
 </head>
 
 <body>
