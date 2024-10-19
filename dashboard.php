@@ -1,5 +1,5 @@
 <?php
-include 'db.php'; //Incluye la conexión a la base de datos
+include 'db.php'; // Incluye la conexión a la base de datos
 session_start();
 
 // Verificar si el usuario está autenticado
@@ -57,7 +57,6 @@ try {
     <title>Dashboard</title>
     <link href="https://fonts.googleapis.com/css?family=Roboto:400,700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="css/dashboard.css">
-
 </head>
 
 <body>
@@ -71,6 +70,7 @@ try {
             <a href="logout.php">Cerrar sesión</a>
         </div>
     </div>
+
     <div class="content">
         <h1>Panel de Usuario</h1>
         <div class="container">
@@ -91,21 +91,18 @@ try {
                     </div>
                 </form>
             </div>
+
             <div class="table-container">
                 <table>
                     <thead>
                         <tr>
+                            <th>#</th>
+                            <th>Username</th>
+                            <th>Email</th>
+                            <th>Password</th>
                             <?php if ($isAdmin): ?>
-                                <th>#</th>
-                                <th>Username</th>
-                                <th>Email</th>
-                                <th>Password</th>
                                 <th>Role</th>
                                 <th>Created At</th>
-                            <?php elseif ($isUser): ?>
-                                <th>#</th>
-                                <th>Email</th>
-                                <th>Password</th>
                             <?php endif; ?>
                         </tr>
                     </thead>
@@ -115,10 +112,9 @@ try {
                         foreach ($users as $row) {
                             echo '<tr>';
                             echo '<td>' . htmlspecialchars($row['id']) . '</td>';
-                            if ($isAdmin) {
-                                echo '<td>' . htmlspecialchars($row['username']) . '</td>';
-                            }
+                            echo '<td>' . htmlspecialchars($row['username']) . '</td>';
                             echo '<td>' . htmlspecialchars($row['email']) . '</td>';
+                            // Mostrar la contraseña como asteriscos
                             echo '<td>********</td>';
                             if ($isAdmin) {
                                 echo '<td>' . htmlspecialchars($row['role']) . '</td>';
