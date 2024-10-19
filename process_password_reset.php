@@ -1,6 +1,6 @@
 <?php
 include 'db.php'; // Incluye la conexión a la base de datos
-session_start(); // Inicia la sesión
+session_start();
 
 $error = '';
 $success = '';

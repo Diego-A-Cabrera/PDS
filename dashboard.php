@@ -1,4 +1,5 @@
 <?php
+include 'db.php'; //Incluye la conexión a la base de datos
 session_start();
 
 // Verificar si el usuario está autenticado
@@ -20,10 +21,6 @@ if (!$isAdmin && !$isUser) {
 // Inicializar filtros
 $username_filter = isset($_GET['username']) ? $_GET['username'] : '';
 $email_filter = isset($_GET['email']) ? $_GET['email'] : '';
-?>
-
-<?php
-include 'db.php';
 
 // Verificar si hay filtros
 $sql = "SELECT id, username, email, password, role, created_at FROM users WHERE 1=1";
@@ -60,7 +57,7 @@ try {
     <title>Dashboard</title>
     <link href="https://fonts.googleapis.com/css?family=Roboto:400,700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="css/dashboard.css">
-    
+
 </head>
 
 <body>
@@ -74,9 +71,6 @@ try {
             <a href="logout.php">Cerrar sesión</a>
         </div>
     </div>
-
-
-
     <div class="content">
         <h1>Panel de Usuario</h1>
         <div class="container">
@@ -87,13 +81,11 @@ try {
                         <input type="text" name="username" id="username"
                             value="<?php echo htmlspecialchars($username_filter); ?>">
                     </div>
-
                     <div>
                         <label for="email">Filtrar por Email:</label>
                         <input type="text" name="email" id="email"
                             value="<?php echo htmlspecialchars($email_filter); ?>">
                     </div>
-
                     <div>
                         <input type="submit" value="Aplicar Filtros">
                     </div>
@@ -127,7 +119,7 @@ try {
                                 echo '<td>' . htmlspecialchars($row['username']) . '</td>';
                             }
                             echo '<td>' . htmlspecialchars($row['email']) . '</td>';
-                            echo '<td>********</td>'; // Contraseña oculta
+                            echo '<td>********</td>';
                             if ($isAdmin) {
                                 echo '<td>' . htmlspecialchars($row['role']) . '</td>';
                                 echo '<td>' . htmlspecialchars($row['created_at']) . '</td>';

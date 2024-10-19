@@ -1,6 +1,6 @@
 <?php
 include 'db.php'; // Incluye la conexión a la base de datos
-session_start(); // Inicia la sesión
+session_start();
 
 // Verificar si el usuario está logueado, si no redirigir
 if (!isset($_SESSION['user_id'])) {
@@ -10,7 +10,7 @@ if (!isset($_SESSION['user_id'])) {
 
 // Variables para almacenar los filtros
 $username_filter = isset($_GET['username']) ? $_GET['username'] : '';
-$email_filter = isset($_GET['email']) ? $_GET['email'] : ''; // Filtro por email
+$email_filter = isset($_GET['email']) ? $_GET['email'] : '';
 $action_filter = isset($_GET['action']) ? $_GET['action'] : '';
 $date_from = isset($_GET['date_from']) ? $_GET['date_from'] : '';
 $date_to = isset($_GET['date_to']) ? $_GET['date_to'] : '';
@@ -24,7 +24,7 @@ if ($username_filter) {
     $query .= " AND users.username LIKE :username";
 }
 if ($email_filter) {
-    $query .= " AND users.email LIKE :email"; // Filtro por email
+    $query .= " AND users.email LIKE :email";
 }
 if ($action_filter) {
     $query .= " AND action = :action";
@@ -41,11 +41,11 @@ $stmt = $pdo->prepare($query);
 
 // Asignar parámetros a la consulta
 if ($username_filter) {
-    $username_filter = "%$username_filter%"; // Usar LIKE con comodines
+    $username_filter = "%$username_filter%";
     $stmt->bindParam(':username', $username_filter, PDO::PARAM_STR);
 }
 if ($email_filter) {
-    $email_filter = "%$email_filter%"; // Usar LIKE con comodines
+    $email_filter = "%$email_filter%";
     $stmt->bindParam(':email', $email_filter, PDO::PARAM_STR);
 }
 if ($action_filter) {
@@ -69,12 +69,12 @@ $logs = $stmt->fetchAll(PDO::FETCH_ASSOC);
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="css/log.css">
     <title>Logs de Usuarios</title>
-    
+
 </head>
 
 <body>
 
-    <!-- Botones de navegación en el margen superior derecho -->
+    <!-- Botones de navegación -->
     <div class="btn-container">
         <a href="admin_dashboard.php" class="btn">Volver al Panel de Administración</a>
         <a href="logout.php" class="btn">Cerrar Sesión</a>
@@ -144,7 +144,6 @@ $logs = $stmt->fetchAll(PDO::FETCH_ASSOC);
             <?php endforeach; ?>
         </tbody>
     </table>
-
 </body>
 
 </html>

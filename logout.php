@@ -1,10 +1,8 @@
 <?php
 session_start();
+require 'db.php'; // Incluye el archivo con la conexión a la base de datos
 
-// Incluir la conexión a la base de datos
-require 'db.php';  // Asegúrate de que esta ruta sea correcta
-
-$userId = $_SESSION['user_id'];  // Asegúrate de que el user_id está en la sesión
+$userId = $_SESSION['user_id'];
 
 // Registrar en el log de cierre de sesión en la tabla user_logs
 $logStmt = $pdo->prepare("INSERT INTO user_logs (user_id, action, timestamp) VALUES (:user_id, 'logout', NOW())");

@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 27-09-2024 a las 00:43:07
+-- Tiempo de generación: 19-10-2024 a las 22:24:55
 -- Versión del servidor: 10.4.28-MariaDB
 -- Versión de PHP: 8.2.4
 
@@ -181,7 +181,27 @@ INSERT INTO `user_logs` (`id`, `user_id`, `action`, `timestamp`) VALUES
 (99, 1, 'logout', '2024-09-26 18:38:47'),
 (100, 3, 'login', '2024-09-26 18:38:55'),
 (101, 3, 'logout', '2024-09-26 18:39:11'),
-(102, 14, 'create', '2024-09-26 18:50:30');
+(102, 14, 'create', '2024-09-26 18:50:30'),
+(103, 3, 'login', '2024-10-19 16:25:38'),
+(104, 3, 'logout', '2024-10-19 16:25:50'),
+(105, 1, 'login', '2024-10-19 16:25:56'),
+(106, 4, 'block', '2024-10-19 16:26:03'),
+(107, 4, 'unblock', '2024-10-19 16:26:04'),
+(108, 1, 'login', '2024-10-19 16:27:25'),
+(109, 1, 'logout', '2024-10-19 16:34:57'),
+(110, 1, 'login', '2024-10-19 16:35:10'),
+(111, 1, 'logout', '2024-10-19 16:35:17'),
+(112, 3, 'login', '2024-10-19 16:35:23'),
+(113, 3, 'logout', '2024-10-19 16:35:27'),
+(114, 1, 'login', '2024-10-19 16:42:55'),
+(115, 10, 'block', '2024-10-19 16:43:00'),
+(116, 10, 'unblock', '2024-10-19 16:43:01'),
+(117, 1, 'logout', '2024-10-19 16:43:40'),
+(118, 3, 'login', '2024-10-19 16:43:45'),
+(119, 3, 'logout', '2024-10-19 16:43:49'),
+(120, 3, 'login', '2024-10-19 16:44:59'),
+(121, 3, 'logout', '2024-10-19 16:50:41'),
+(122, 1, 'login', '2024-10-19 16:50:46');
 
 --
 -- Índices para tablas volcadas
@@ -216,7 +236,7 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT de la tabla `user_logs`
 --
 ALTER TABLE `user_logs`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=103;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=123;
 
 --
 -- Restricciones para tablas volcadas

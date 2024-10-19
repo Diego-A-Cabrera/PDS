@@ -106,7 +106,7 @@ $users = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
     <h1>Panel de Administración</h1>
 
-    <!-- Formulario de filtros con nueva estética -->
+    <!-- Formulario de filtros -->
     <div class="filter-container">
         <form method="GET" action="admin_dashboard.php">
             <div>

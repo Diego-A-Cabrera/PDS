@@ -2,8 +2,7 @@
 include 'db.php'; // Incluye la conexión a la base de datos
 include 'toggleConfirmPasswordVisibility.php';
 include 'togglePasswordVisibility.php';
-session_start(); // Inicia la sesión
-
+session_start();
 $error = ''; // Variable para almacenar mensajes de error
 $success = ''; // Variable para almacenar el mensaje de éxito
 
@@ -93,8 +92,6 @@ function validate_password($password)
         preg_match('/[\W_]/', $password);   // Al menos un carácter especial
 }
 ?>
-
-
 <!DOCTYPE html>
 <html lang="es">
 
@@ -163,12 +160,8 @@ function validate_password($password)
                         onclick="togglePasswordVisibility('security_question_3', this)">👁️</span>
                 </div>
             </div>
-
-
             <input type="submit" value="Registrarse">
-
         </form>
-
         <div class="footer">
             <p>¿Ya tienes cuenta? <a href="login.php">Inicia sesión aquí</a></p>
         </div>
