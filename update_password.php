@@ -1,5 +1,7 @@
 <?php
 include 'db.php'; // Incluye la conexión a la base de datos
+include 'toggleConfirmPasswordVisibility.php';
+include 'togglePasswordVisibility.php';
 session_start();
 
 $error = '';
@@ -99,11 +101,18 @@ function validate_password($password)
         <?php endif; ?>
 
         <form method="POST" action="update_password.php">
-            <label for="new_password">Nueva Contraseña</label>
-            <input type="password" name="new_password" id="new_password" required>
+        
+            <label for="new_password">Nueva Contraseña:</label>
+            <div class="password-container">
+                <input type="password" name="new_password" id="new_password" required>
+                <span class="toggle-password" onclick="togglePasswordVisibility('new_password', this)">👁️</span>
+            </div>
 
-            <label for="confirm_password">Confirmar Contraseña</label>
-            <input type="password" name="confirm_password" id="confirm_password" required>
+            <label for="confirm_password">Confirmar contraseña</label>
+            <div class="password-container">
+                <input type="password" name="confirm_password" id="confirm_password" required>
+                <span class="toggle-password" onclick="togglePasswordVisibility('confirm_password', this)">👁️</span>
+            </div>
 
             <input type="submit" value="Actualizar Contraseña">
         </form>

@@ -1,3 +1,7 @@
+<?php
+include 'toggleConfirmPasswordVisibility.php';
+include 'togglePasswordVisibility.php';
+?>
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -24,13 +28,22 @@
             <input type="email" name="email" id="email" required>
 
             <label for="answer1">¿Cuál fue el nombre de la escuela a la que fuiste?</label>
-            <input type="text" name="answer1" id="answer1" required>
-
+            <div class="password-container">
+                <input type="password" name="answer1" id="answer1" required>
+                <span class="toggle-password" onclick="togglePasswordVisibility('answer1', this)">👁️</span>
+            </div>
+            
             <label for="answer2">¿Cuál fue el nombre de tu primera mascota?</label>
-            <input type="text" name="answer2" id="answer2" required>
+            <div class="password-container">
+                <input type="password" name="answer2" id="answer2" required>
+                <span class="toggle-password" onclick="togglePasswordVisibility('answer2', this)">👁️</span>
+            </div>
 
             <label for="answer3">¿Cuál es tu película favorita?</label>
-            <input type="text" name="answer3" id="answer3" required>
+            <div class="password-container">
+                <input type="password" name="answer3" id="answer3" required>
+                <span class="toggle-password" onclick="togglePasswordVisibility('answer3', this)">👁️</span>
+            </div>
 
             <input type="submit" value="Enviar">
         </form>

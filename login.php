@@ -1,5 +1,7 @@
 <?php
 include 'db.php'; // Incluye el archivo con la conexión a la base de datos
+include 'toggleConfirmPasswordVisibility.php';
+include 'togglePasswordVisibility.php';
 session_start();
 
 $error = ''; // Variable para almacenar mensajes de error
@@ -110,8 +112,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             <input type="text" name="username" id="username" required>
 
             <label for="password">Contraseña</label>
-            <input type="password" name="password" id="password" required>
-
+            <div class="password-container">
+                <input type="password" name="password" id="password" required>
+                <span class="toggle-password" onclick="togglePasswordVisibility('password', this)">👁️</span>
+            </div>
+           
             <input type="submit" value="Iniciar Sesión">
         </form>
 
